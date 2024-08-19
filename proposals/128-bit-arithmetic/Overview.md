@@ -134,11 +134,11 @@ will be extended with:
 
 ```
 instr ::= ...
-		| i64.{binop128}
+        | i64.{binop128}
 
 binop128 ::= add128
-		   | sub128
-		   | mul128
+           | sub128
+           | mul128
 ```
 
 ### Validation
