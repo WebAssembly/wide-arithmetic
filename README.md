@@ -1,4 +1,4 @@
-# 128-bit arithemtic proposal for WebAssembly.
+# 128-bit arithmetic proposal for WebAssembly.
 
 This repository is a clone of
 [`WebAssembly/spec`](https://github.com/WebAssembly/spec/). It is meant for
