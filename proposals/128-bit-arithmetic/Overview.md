@@ -226,7 +226,95 @@ plaininstr_l ::= ...
 
 ### Alternative: Overflow Flags
 
-... TODO ...
+A major alternative to this proposal is to expose the lower-level primitives
+that 128-bit addition/subtraction are themselves built on for the underlying
+platforms. This hypothetically would remove the need for `i64.{add,sub}128`. The
+basic idea is that platforms such as x86\_64 and aarch64 expose overflow flags
+for arithmetic operations. These platforms additionally have instructions that
+consume the overflow flag with an arithmetic operation as well. In WebAssembly
+these might look like:
+
+* `i64.add_overflow_{u,s} : [i64 i64] -> [i64 i32]`
+* `i64.add_with_carry_{u,s} : [i64 i64 i32] -> [i64 i32]`
+
+Both instructions would produce a 64-bit result plus an overflow flag, an `i32`.
+The `i32` result would be defined as either 0 or 1 indicating whether an
+overflow happened during the operation. The `*_add_with_carry_*` variant would
+additionally take a third parameter which is an overflow flag from a previous
+instruction. To match what hardware has this would need to be defined as either
+0 or nonzero (note that this is subtly different from the result of
+`*_add_overflow_*`).
+
+An example of using these instructions to implement 128-bit addition would be:
+
+```wasm
+(module
+  (func $add128 (param i64 i64 i64 i64) (result i64 i64)
+    (local $oflow i32)
+    (i64.add_overflow_u (local.get 0) (local.get 2))
+    local.set $oflow
+    (i64.add_with_carry_u (local.get 1) (local.get 3) (local.get $oflow))
+    drop
+  )
+)
+```
+
+This is quite close to what x86\_64 would produce for an equivalent function for
+example:
+
+```
+0000000000000000 <add_i128>:
+   0:	48 89 f8             	mov    %rdi,%rax
+   3:	48 01 d0             	add    %rdx,%rax
+   6:	48 11 ce             	adc    %rcx,%rsi
+   9:	48 89 f2             	mov    %rsi,%rdx
+   c:	c3                   	ret
+```
+
+The primary downside of this approach, when considering in 128-bit arithmetic,
+is that the performance of these instructions relies on "fusing" these
+instructions together. For example backend-based peephole optimization passes
+would be required. A naive lowering of the above WebAssembly done in an initial
+implementation of Wasmtime looks like (annotated):
+
+```
+0000000000000000 <wasm[0]::function[0]::add128>:
+  push   %rbp
+  mov    %rsp,%rbp
+  mov    %rdx,%rax
+  add    %r8,%rax           ;; i64.add_overflow_u: perform the addition
+  rex setb %dl              ;; i64.add_overflow_u: move overflow flags to register
+  movzbl %dl,%r10d          ;; i64.add_overflow_u: zero-extend 8-bit flags to 32-bits
+  add    $0xffffffff,%r10d  ;; i64.add_with_carry_u: move overflow register back into eflags
+  adc    %r9,%rcx           ;; i64.add_with_carry_u: perform the addition-with-carry
+  rex setb %dl              ;; i64.add_with_carry_u: move flags to register
+  mov    %rbp,%rsp
+  pop    %rbp
+  ret
+```
+
+This is much less efficient than the native output on x86\_64 for a number of
+reasons:
+
+* The `setb + movzbl + add $0xfff.., ..` is all unnecessary. A peephole pass can
+  in theory remove this.
+* The final `setb %dl` is unnecessary because the result is dead code. A
+  peephole pass or otherwise can in theory remove this.
+
+An initial benchmark of "calculate the 10\_000th fibonacci number" with a bignum
+library showed that with these two alternate instructions (instead of
+`i64.add128`) that the generated code was **slower** than WebAssembly was before
+this proposal. This result indicates that if the motivation for this proposal is
+faster 128-bit arithmetic then runtimes will be required to implement the above
+optimizations (which Wasmtime, for example, does not already). Other runtime
+have not been surveyed yet to see if they already implement such optimizations.
+
+The conclusion so far is that overflow flags are not the best means to achieve
+good performance of 128-bit arithmetic at this time. Overflow flags might be
+useful to other use cases in their own right (unrelated to 128-bit arithmetic),
+but for 128-bit arithmetic focused cases the `i64.{add,sub}128` instructions are
+seen as simpler alternatives for compilers to implement in addition to
+toolchains to generate.
 
 ### Alternative: Widening multiplication
 
