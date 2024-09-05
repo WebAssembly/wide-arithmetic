@@ -383,6 +383,8 @@ unlikely to be significantly faster than `__udivti3`-compiled-to-WebAssembly.
 
 ### Alternative: Why not add `i64.{lt,gt,ge,gu}128_{s,u}`?
 
+> **Note**: this alternative is further discussed in [#4]
+
 A question posed in [#4] and at previous meetings has been why not add
 comparison operations for 128-bit values? A benchmark of sorting an array of
 128-bit integers has shown that engines today have a 60%+ slowdown relative to
