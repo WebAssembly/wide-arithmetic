@@ -373,6 +373,10 @@ toolchains to generate.
 
 ### Alternative: 128-bit multiplication
 
+> **Note**: this was historically discussed in some more depth at [#11].
+
+[#11]: https://github.com/WebAssembly/128-bit-arithmetic/issues/11
+
 Instead of `i64.mul_wide_{s,u}` it would be possible to instead add `i64.mul128`
 which exposes a full 128-bit-by-128-bit multiplication. This is a "cleaner"
 alternative where it aligns well with `i64.add128` and `i64.sub128` in style.
