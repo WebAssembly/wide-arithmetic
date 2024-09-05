@@ -226,6 +226,12 @@ plaininstr_l ::= ...
 
 ### Alternative: Overflow Flags
 
+> **Note**: this alternative is the subject of [#6] and this section is intended
+> to summarize investigations and results of that issue. See [#6] for more
+> in-depth discussion too.
+
+[#6]: https://github.com/WebAssembly/128-bit-arithmetic/issues/6
+
 A major alternative to this proposal is to expose the lower-level primitives
 that 128-bit addition/subtraction are themselves built on for the underlying
 platforms. This hypothetically would remove the need for `i64.{add,sub}128`. The
@@ -370,6 +376,10 @@ closely maps what native platforms do by operating on values in general-purpose
 registers.
 
 ### Alternative: Why not add `i64.div128_{u,s}`?
+
+> **Note**: this section is also being discussed in [#15].
+
+[#15]: https://github.com/WebAssembly/128-bit-arithmetic/issues/15
 
 Native ISAs generally do not have support for 128-bit division. The x86-64 ISA
 has the ability to divide a 128-bit value by a 64-bit value producing a 64-bit
