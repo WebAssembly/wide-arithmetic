@@ -32,9 +32,9 @@ WebAssembly by adding new instructions which enable more efficient lowerings of
 [This is an example](https://godbolt.org/z/fMdjqvEaq) of what LLVM emits today
 for 128-bit operations in source languages. Notably:
 
-* `i64.add128` - expands to three `add` instructions plus comparisons.
-* `i64.sub128` - same as `i64.add`, but with `sub` instructions.
-* `i64.mul128` - this notably uses the `__multi3` libcall which is significantly
+* `i64_add128` - expands to three `add` instructions plus comparisons.
+* `i64_sub128` - same as `i64.add`, but with `sub` instructions.
+* `i64_mul128` - this notably uses the `__multi3` libcall which is significantly
   slower than performing the operation inline.
 
 For the same code [this is what native platforms
@@ -81,14 +81,15 @@ these issues.
 
 ## Proposal
 
-This proposal currently adds three new instructions to WebAssembly:
+This proposal currently adds four new instructions to WebAssembly:
 
 * `i64.add128`
 * `i64.sub128`
-* `i64.mul128`
+* `i64.mul_wide_s`
+* `i64.mul_wide_u`
 
-These instructions all have the type `[i64 i64 i64 i64] -> [i64 i64]` where the
-values are:
+These instructions `i64.add128` and `i64.sub128` have the type
+`[i64 i64 i64 i64] -> [i64 i64]` where the values are:
 
 * i64 argument 0 - the low 64 bits of the left-hand-side argument
 * i64 argument 1 - the high 64 bits of the left-hand-side argument
@@ -98,11 +99,19 @@ values are:
 * i64 result 1 - the high 64 bits of the result
 
 Each 128-bit operand and result is split into a low/high pair of `i64` values.
-The semantics of add/sub/mul are the same as their 64-bit equivalents except
+The semantics of add/sub are the same as their 64-bit equivalents except
 that they work at the level of 128-bits instead of 64-bits.
 
-## Example
+The `i64.mul_wide_{s,u}` instructions perform a multiplication of two 64-bit
+operands and return the 128-bit result as two `i64` values. These instructions
+have the type `[i64 i64] -> [i64 i64]` where the operands are:
 
+* i64 argument 0 - the left-hand-side argument for multiplication
+* i64 argument 1 - the right-hand-side argument for multiplication
+* i64 result 0 - the low 64 bits of the result
+* i64 result 1 - the high 64 bits of the result
+
+## Example
 
 An example of implementing
 [`u64::overflowing_add`](https://doc.rust-lang.org/std/primitive.u64.html#method.overflowing_add)
@@ -135,10 +144,10 @@ will be extended with:
 ```
 instr ::= ...
         | i64.{binop128}
+        | i64.mul_wide_s
+        | i64.mul_wide_u
 
-binop128 ::= add128
-           | sub128
-           | mul128
+binop128 ::= add128 | sub128
 ```
 
 ### Validation
@@ -155,6 +164,14 @@ i64.{binop128}
 
             ----------------------------------------------------
              C ⊢ i64.{binop128} : [i64 i64 i64 i64] -> [i64 i64]
+
+i64.mul_wide_{s,u}
+
+* The instruction is valid with type [i64 i64] -> [i64 i64]
+
+
+            ----------------------------------------------------
+             C ⊢ i64.mul_wide_{s,u} : [i64 i64] -> [i64 i64]
 
 ```
 
@@ -186,6 +203,42 @@ i64.{binop128}
     (i64.const c1) (i64.const c2) (i64.const c3) (i64.const c4) i64.{binop128}
                              ↪ (i64.const r1) (i64.const r2)
                              (if r1:r2 = {binop128}(c1:c2, c3:c4))
+
+i64.mul_wide_s
+
+* Assert: due to validation, two values of type i64 are on the top of the stack.
+* Pop the value `i64.const c2` from the stack.
+* Pop the value `i64.const c1` from the stack.
+* Let `v1` be `c1` sign-extended to 128-bits.
+* Let `v2` be `c2` sign-extended to 128-bits.
+* Let `r` be the result of computing `mul(v1, v2)`
+* Let `r1` be the low 64-bits of `r`
+* Let `r2` be the high 64-bits of `r`
+* Push the value `i64.const r1` to the stack
+* Push the value `i64.const r2` to the stack
+
+
+                    (i64.const c1) (i64.const c2) i64.mul_wide_s
+                             ↪ (i64.const r1) (i64.const r2)
+                             (if r1:r2 = mul(sextend(c1), sextend(c2)))
+
+i64.mul_wide_u
+
+* Assert: due to validation, two values of type i64 are on the top of the stack.
+* Pop the value `i64.const c2` from the stack.
+* Pop the value `i64.const c1` from the stack.
+* Let `v1` be `c1` zero-extended to 128-bits.
+* Let `v2` be `c2` zero-extended to 128-bits.
+* Let `r` be the result of computing `mul(v1, v2)`
+* Let `r1` be the low 64-bits of `r`
+* Let `r2` be the high 64-bits of `r`
+* Push the value `i64.const r1` to the stack
+* Push the value `i64.const r2` to the stack
+
+
+                    (i64.const c1) (i64.const c2) i64.mul_wide_u
+                             ↪ (i64.const r1) (i64.const r2)
+                             (if r1:r2 = mul(zextend(c1), zextend(c2)))
 ```
 
 ### Binary Format
@@ -198,7 +251,8 @@ will be extended with:
 instr ::= ...
         | 0xFC 19:u32   ⇒ i64.add128
         | 0xFC 20:u32   ⇒ i64.sub128
-        | 0xFC 21:u32   ⇒ i64.mul128
+        | 0xFC 21:u32   ⇒ i64.mul_wide_s
+        | 0xFC 22:u32   ⇒ i64.mul_wide_u
 ```
 
 > **Note**: opcodes 0-7 are `*.trunc_sat_*` instructions, 8-17 are bulk-memory
@@ -215,7 +269,8 @@ will be extended with:
 plaininstr_l ::= ...
                | 'i64.add128' ⇒ i64.add128
                | 'i64.sub128' ⇒ i64.sub128
-               | 'i64.mul128' ⇒ i64.mul128
+               | 'i64.mul_wide_s' ⇒ i64.mul_wide_s
+               | 'i64.mul_wide_u' ⇒ i64.mul_wide_u
 ```
 
 ## Implementation Status
@@ -322,19 +377,38 @@ but for 128-bit arithmetic focused cases the `i64.{add,sub}128` instructions are
 seen as simpler alternatives for compilers to implement in addition to
 toolchains to generate.
 
-### Alternative: Widening multiplication
+### Alternative: 128-bit multiplication
 
-Instead of `i64.mul128` it would be sufficient to add instructions such as
-`i64.mul_wide_{u,s}` which are typed as `[i64 i64] -> [i64 i64]` and are defined
-as producing a 128-bit result by multiplying the two 64-bit provided values.
-This corresponds to `mul` and `imul` on x86-64 and has [equivalents on other
-platforms as well](https://godbolt.org/z/eojr3MdWz). This is a lower-level
-primitive than `i64.mul128` and is well-supported across architectures. Given
-the current shape of the proposal, however, it "feels cleaner" to have
-`i64.mul128`. The `i64.mul_wide_u` instruction can be encoded as `i64.mul128`
-with constant 0 values for the upper bits and `i64.mul_wide_s` can be encoded
-similarly with a right-shift of the low bits. This means that `i64.mul128`
-should be sufficient for expressing the use cases of `i64.mul_wide_{s,u}`.
+> **Note**: this was historically discussed in some more depth at [#11].
+
+[#11]: https://github.com/WebAssembly/128-bit-arithmetic/issues/11
+
+Instead of `i64.mul_wide_{s,u}` it would be possible to instead add `i64.mul128`
+which exposes a full 128-bit-by-128-bit multiplication. This is a "cleaner"
+alternative where it aligns well with `i64.add128` and `i64.sub128` in style.
+This instruction, however, does not exist on any native platform and most native
+platforms instead have some form of `i64.mul_wide_{s,u}`. For example on x64 the
+`mul` instruction produces a double-wide result. On AArch64 and RISC-V there is
+one instruction to produce the low 64-bits of a 64-by-64 multiplication and two
+instructions to produce the high bits depending on the sign of the operands.
+This means that `i64.mul_wide_{s,u}` map cleanly to what existing architectures
+provide.
+
+Additionally some specific downsides of `i64.mul128` is that it requires further
+optimizations to reach the same level of performance as `i64.mul_wide_{s,u}`.
+For example if both operations are zero-extended or sign-extended from 64-bits
+it's the same as `i64.mul_wide_{s,u}`. Code generators such as LLVM additionally
+need to take care to optimize 128-bit multiplication in source languages where
+the upper 64-bits are discarded to just producing the low 64-bits. This required
+special handling in a prototype implementation of `i64.mul128` for example.
+Finally there are algorithms where only the high bits of the 64-by-64
+multiplication are required and that is difficult to pattern match out of a
+128-by-128 bit multiplication.
+
+Overall the case for `i64.mul128` is not as compelling as `i64.mul_wide_{s,u}`.
+In benchmarks so far the widening multiplication has performed better or the
+same as `i64.mul128` and has been much easier to implement in prototypes of LLVM
+and Wasmtime.
 
 ### Alternative: Why not add an `i128` type to WebAssembly?
 
