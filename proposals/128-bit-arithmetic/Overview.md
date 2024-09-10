@@ -390,3 +390,28 @@ LLVM additionally for native platforms [unconditionally lowers 128-bit
 division](https://godbolt.org/z/4xbGvbxja) to a host libcall of the `__udivti3`
 function. It's expected that a host-provided implementation of `__udivti3` is
 unlikely to be significantly faster than `__udivti3`-compiled-to-WebAssembly.
+
+### Alternative: Why not add `i64.{lt,gt,ge,gu}128_{s,u}`?
+
+> **Note**: this alternative is further discussed in [#4]
+
+A question posed in [#4] and at previous meetings has been why not add
+comparison operations for 128-bit values? A benchmark of sorting an array of
+128-bit integers has shown that engines today have a 60%+ slowdown relative to
+native, meaning that there is a good theoretical chunk of room for improvement
+here. A prototype implementation in LLVM and Wasmtime however showed that while
+performance did improve it did not markedly improve. For example Wasmtime
+improved its performance by about 20% on x86\_64 (relative to native).
+
+Further investigation revealed that while these instructions could be added
+they're also relatively easy for engines today to pattern-match and optimized.
+For example in [bytecodealliance/wasmtime#9176] rules were added to Cranelift to
+recognize 128-bit comparisons and emit those. This means that Wasmtime, for
+example, is already able to optimize these patterns without new instructions.
+
+Overall the meager performance gains and possibility of optimizing preexisting
+patterns has led to this proposal not including comparison-related instructions
+at this time.
+
+[#4]: https://github.com/WebAssembly/128-bit-arithmetic/issues/4
+[bytecodealliance/wasmtime#9176]: https://github.com/bytecodealliance/wasmtime/pull/9176
