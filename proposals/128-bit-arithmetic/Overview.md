@@ -302,9 +302,10 @@ Both instructions would produce a 64-bit result plus an overflow flag, an `i32`.
 The `i32` result would be defined as either 0 or 1 indicating whether an
 overflow happened during the operation. The `*_add_with_carry_*` variant would
 additionally take a third parameter which is an overflow flag from a previous
-instruction. To match what hardware has this would need to be defined as either
-0 or nonzero (note that this is subtly different from the result of
-`*_add_overflow_*`).
+instruction. From a hardware perspective this value should be `i1`, but that
+type isn't available to WebAssembly. Additionally the instruction must be
+defined for all possible values, so `add_with_carry_*` would likely define its
+input as 0-or-nonzero to indicate whether an extra 1 is being added.
 
 An example of using these instructions to implement 128-bit addition would be:
 
@@ -370,12 +371,44 @@ faster 128-bit arithmetic then runtimes will be required to implement the above
 optimizations (which Wasmtime, for example, does not already). Other runtime
 have not been surveyed yet to see if they already implement such optimizations.
 
+At this time it's not feasible to implement this fusing/peephole optimization in
+Wasmtime either. This largely boils down to the fact that a hypothetical
+`*.add_with_carry_*` instruction does not actually match what hardware supports.
+Native add-with-carry instructions require that the carry input is located in a
+special flags register that is completely different from other operands. This
+special register can't be register allocated and on x86\_64 is clobbered by many
+instructions. This means that Wasmtime, for example, has no optimizations around
+this previously and would require a significant investment of time and
+infrastructure to develop such optimizations (just for this one instruction).
+
+To make this instruction easier to translate in Wasmtime (and maybe other
+compilers? they haven't been surveyed) would require changing the definition of
+the instructions themselves. One possibility would be to add a `flag` type to
+WebAssembly which means that it's known to be a single bit at runtime and is
+only produced or consumed by these specific instructions. This still doesn't
+match hardware, though, because the carry bit is completely different from
+normal instruction outputs. Another possible alternative would be to introduce
+the concept of implicit flags to WebAssembly itself (e.g. a "wasm flags
+register"). For example `i64.add_with_carry_u` would have the type
+`[i64 i64] -> [i64]` where the execution state implicitly handles the carry
+flag.
+
 The conclusion so far is that overflow flags are not the best means to achieve
-good performance of 128-bit arithmetic at this time. Overflow flags might be
-useful to other use cases in their own right (unrelated to 128-bit arithmetic),
-but for 128-bit arithmetic focused cases the `i64.{add,sub}128` instructions are
-seen as simpler alternatives for compilers to implement in addition to
-toolchains to generate.
+good performance of 128-bit arithmetic at this time. The naive version of the
+instructions are seen as too difficult to compile optimally given today's
+compilers (assuming others are similar to Wasmtime). The easiest alternative for
+wasm compilers, adding an implicit "wasm flags register" which instructions
+modify, is seen as too large of a change for the WebAssembly specification
+relative to the benefit. This proposal has been measured to yield significant
+speedups on benchmarks with bignum operations and 128-bit operations alike. The
+gap between native and WebAssembly is not 0% but it is significantly reduced
+from prior (e.g. previously 2x slower and afterwards 10% slower, on multiple
+architectures).
+
+Overflow flags might be useful to other use cases in their own right (unrelated
+to 128-bit arithmetic or bignum), but for 128-bit arithmetic focused cases the
+`i64.{add,sub}128` instructions are seen as simpler alternatives for compilers
+to implement in addition to toolchains to generate.
 
 ### Alternative: 128-bit multiplication
 
