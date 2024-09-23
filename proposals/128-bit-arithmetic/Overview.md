@@ -489,3 +489,32 @@ at this time.
 
 [#4]: https://github.com/WebAssembly/128-bit-arithmetic/issues/4
 [bytecodealliance/wasmtime#9176]: https://github.com/bytecodealliance/wasmtime/pull/9176
+
+### Alternative: Why not add shift or rotate instructions?
+
+> **Note**: this alternative is further discussed in [#5]
+
+With the goal of supporting 128-bit or wider-than-64 operations, a reasonable
+question might also be why not include rotation/shift instructions? For example
+for 64-bit integers WebAssembly has `i64.{rotl,rotr,shl,shr_s,shr_u}`, and would
+something be appropriate to add for equivalent operations on larger integer
+sizes?
+
+Investigation in [#5] has shown that x86\_64 has instructions [`shld`] and
+[`shrd`] which LLVM uses for 128-bit shifts on native platforms. A benchmark
+showcasing 128-bit shifts has been difficult to find, but a benchmark for
+bignum shifts shows that these instructions are not used. Instead the benchmark
+on native makes use of SIMD instructions. When the same benchmarks is compiled
+to WebAssembly it additionally uses SIMD instructions. The performance gap on
+x86\_64 is quite large with WebAssembly being 100% slower than native in
+Wasmtime. On AArch64 the performance gap is 35% or so.
+
+Given these numbers it's currently conjectured that instructions for this
+proposal may not be necessary for shifts and rotates. While there's a gap in
+performance between wasm and native which is significant the best location to
+improve for bignums may be with new SIMD instructions rather than new special
+instructions related to 128-bit integers.
+
+[`shld`]: https://www.felixcloutier.com/x86/shld
+[`shrd`]: https://www.felixcloutier.com/x86/shrd
+[#5]: https://github.com/WebAssembly/128-bit-arithmetic/issues/5
