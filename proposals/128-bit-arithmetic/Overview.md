@@ -293,7 +293,7 @@ with a sequence of two instructions. This gives rise to an alternative to this
 proposal which is to support these instructions individually rather than the
 combined 128-bit operation.
 
-Native platforms have an "overflow flag" in their processor state which
+Many native platforms have an "overflow flag" in their processor state which
 instructions can read and write to. In WebAssembly these instructions for
 addition might look like this for example:
 
