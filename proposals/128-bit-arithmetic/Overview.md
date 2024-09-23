@@ -279,7 +279,7 @@ plaininstr_l ::= ...
 
 ## Alternatives
 
-### Alternative: Overflow Flags
+### Alternative: Overflow Flags as a value
 
 > **Note**: this alternative is the subject of [#6] and this section is intended
 > to summarize investigations and results of that issue. See [#6] for more
@@ -287,32 +287,31 @@ plaininstr_l ::= ...
 
 [#6]: https://github.com/WebAssembly/128-bit-arithmetic/issues/6
 
-A major alternative to this proposal is to expose the lower-level primitives
-that 128-bit addition/subtraction are themselves built on for the underlying
-platforms. This hypothetically would remove the need for `i64.{add,sub}128`. The
-basic idea is that platforms such as x86\_64 and aarch64 expose overflow flags
-for arithmetic operations. These platforms additionally have instructions that
-consume the overflow flag with an arithmetic operation as well. In WebAssembly
-these might look like:
+No current native platform has a single instruction for 128-bit addition or
+subtraction. On x86\_64 and aarch64 for example these operations are implemented
+with a sequence of two instructions. This gives rise to an alternative to this
+proposal which is to support these instructions individually rather than the
+combined 128-bit operation.
 
-* `i64.add_overflow_{u,s} : [i64 i64] -> [i64 i32]`
-* `i64.add_with_carry_{u,s} : [i64 i64 i32] -> [i64 i32]`
+Native platforms have an "overflow flag" in their processor state which
+instructions can read and write to. In WebAssembly these instructions for
+addition might look like this for example:
 
-Both instructions would produce a 64-bit result plus an overflow flag, an `i32`.
-The `i32` result would be defined as either 0 or 1 indicating whether an
-overflow happened during the operation. The `*_add_with_carry_*` variant would
-additionally take a third parameter which is an overflow flag from a previous
-instruction. From a hardware perspective this value should be `i1`, but that
-type isn't available to WebAssembly. Additionally the instruction must be
-defined for all possible values, so `add_with_carry_*` would likely define its
-input as 0-or-nonzero to indicate whether an extra 1 is being added.
+* `i64.add_overflow_{u,s} : [i64 i64] -> [i64 $t]`
+* `i64.add_with_carry_{u,s} : [i64 i64 $t] -> [i64 $t]`
+
+Both instructions would produce a 64-bit result plus an overflow flag, here
+labeled as `$t`. The exact choice of type here has consequences on the
+implementation, and some possibilities are discussed below. Semantically though
+the `$t` results are "truthy" if the operation overflowed, and the input to
+`add_with_carry_u` means "add one more" if the value is "truthy".
 
 An example of using these instructions to implement 128-bit addition would be:
 
 ```wasm
 (module
   (func $add128 (param i64 i64 i64 i64) (result i64 i64)
-    (local $oflow i32)
+    (local $oflow $t)
     (i64.add_overflow_u (local.get 0) (local.get 2))
     local.set $oflow
     (i64.add_with_carry_u (local.get 1) (local.get 3) (local.get $oflow))
@@ -321,23 +320,31 @@ An example of using these instructions to implement 128-bit addition would be:
 )
 ```
 
-This is quite close to what x86\_64 would produce for an equivalent function for
-example:
+This is quite close to [what x86\_64 would produce][godbolt-add-i128] for an
+equivalent native function for example:
+
+[godbolt-add-i128]: https://godbolt.org/z/1x54aneoW
 
 ```
 0000000000000000 <add_i128>:
    0:	48 89 f8             	mov    %rdi,%rax
-   3:	48 01 d0             	add    %rdx,%rax
-   6:	48 11 ce             	adc    %rcx,%rsi
+   3:	48 01 d0             	add    %rdx,%rax    ;; i64.add_overflow_u
+   6:	48 11 ce             	adc    %rcx,%rsi    ;; i64.add_with_carry_u
    9:	48 89 f2             	mov    %rsi,%rdx
    c:	c3                   	ret
 ```
 
-The primary downside of this approach, when considering in 128-bit arithmetic,
-is that the performance of these instructions relies on "fusing" these
-instructions together. For example backend-based peephole optimization passes
-would be required. A naive lowering of the above WebAssembly done in an initial
-implementation of Wasmtime looks like (annotated):
+#### Overflow flag: `$t = i32`
+
+An implementation has been prototyped where `$t` here is `i32`. Overflow-flag
+producing operations always generate 0 or 1 and "truthy" is defined as
+zero-or-nonzero. Using this prototype an initial benchmark of "calculate the
+10\_000th fibonacci number" with a bignum library showed that with these two
+alternate instructions (instead of `i64.add128`) that **the generated code was
+slower than WebAssembly was before this proposal**.
+
+To understand why it's slower than before this is an example of the above
+128-bit addition function outlined above, with annotated assembly:
 
 ```
 0000000000000000 <wasm[0]::function[0]::add128>:
@@ -355,60 +362,109 @@ implementation of Wasmtime looks like (annotated):
   ret
 ```
 
-This is much less efficient than the native output on x86\_64 for a number of
-reasons:
+This is quite far from the optimal x86\_64 code above and reveals some drawbacks
+of the "overflow flag as a value" model:
 
-* The `setb + movzbl + add $0xfff.., ..` is all unnecessary. A peephole pass can
-  in theory remove this.
-* The final `setb %dl` is unnecessary because the result is dead code. A
-  peephole pass or otherwise can in theory remove this.
+* **On native architectures the overflow flag is not a value**, it's a single
+  bit in a single fixed register. It's not subject to register allocation and on
+  platforms like x86\_64 it can be clobbered by many instructions.
+* Native architectures generally don't like moving bits in and out of the flags
+  register (e.g. `setb` extracting above and `add $-1, ...` putting it back in).
+* Compilers like Cranelift in Wasmtime do not have preexisting support for
+  optimizing use of the flags register due to its unique nature.
 
-An initial benchmark of "calculate the 10\_000th fibonacci number" with a bignum
-library showed that with these two alternate instructions (instead of
-`i64.add128`) that the generated code was **slower** than WebAssembly was before
-this proposal. This result indicates that if the motivation for this proposal is
-faster 128-bit arithmetic then runtimes will be required to implement the above
-optimizations (which Wasmtime, for example, does not already). Other runtime
-have not been surveyed yet to see if they already implement such optimizations.
+Improving the code generation of these instructions in Cranelift/Wasmtime would
+require significant investment into specialized optimizations just for these
+instructions (e.g. a peephole pass after lowering or significantly different IR
+constructs). It's predicted that similar significant investments would be
+required to optimize other compilers as well.
 
-At this time it's not feasible to implement this fusing/peephole optimization in
-Wasmtime either. This largely boils down to the fact that a hypothetical
-`*.add_with_carry_*` instruction does not actually match what hardware supports.
-Native add-with-carry instructions require that the carry input is located in a
-special flags register that is completely different from other operands. This
-special register can't be register allocated and on x86\_64 is clobbered by many
-instructions. This means that Wasmtime, for example, has no optimizations around
-this previously and would require a significant investment of time and
-infrastructure to develop such optimizations (just for this one instruction).
+#### Overflow flag: `$t = i1`
 
-To make this instruction easier to translate in Wasmtime (and maybe other
-compilers? they haven't been surveyed) would require changing the definition of
-the instructions themselves. One possibility would be to add a `flag` type to
-WebAssembly which means that it's known to be a single bit at runtime and is
-only produced or consumed by these specific instructions. This still doesn't
-match hardware, though, because the carry bit is completely different from
-normal instruction outputs. Another possible alternative would be to introduce
-the concept of implicit flags to WebAssembly itself (e.g. a "wasm flags
-register"). For example `i64.add_with_carry_u` would have the type
-`[i64 i64] -> [i64]` where the execution state implicitly handles the carry
-flag.
+Another possibility of `$t` in the above instructions is to introduce a brand
+new type to WebAssembly, `i1` (or `flags` or similar). That more accurately
+models what native architectures have in this regard. **The problem with this
+alternative, though, is that it fundamentally has the same problem** as the
+previous alternative where WebAssembly would be modeling the overflow flag as a
+*value* whereas in native architectures it's a piece of *state* on the processor
+that instructions can use.
 
-The conclusion so far is that overflow flags are not the best means to achieve
-good performance of 128-bit arithmetic at this time. The naive version of the
-instructions are seen as too difficult to compile optimally given today's
-compilers (assuming others are similar to Wasmtime). The easiest alternative for
-wasm compilers, adding an implicit "wasm flags register" which instructions
-modify, is seen as too large of a change for the WebAssembly specification
-relative to the benefit. This proposal has been measured to yield significant
-speedups on benchmarks with bignum operations and 128-bit operations alike. The
-gap between native and WebAssembly is not 0% but it is significantly reduced
-from prior (e.g. previously 2x slower and afterwards 10% slower, on multiple
-architectures).
+For example in the above native instructions that Cranelift/Wasmtime generated
+if the type were known to be `i1` then the `movzbl %dl,%r10d` instruction would
+not be necessary and the `add $0xffffffff,%r10d` could be shrunk to
+`add $0xff,%r10b`. Otherwise though there's still the same problems of moving
+out of the flags register for lowering and moving back in, which is a
+significant slowdown compared to the optimal lowering.
 
-Overflow flags might be useful to other use cases in their own right (unrelated
-to 128-bit arithmetic or bignum), but for 128-bit arithmetic focused cases the
-`i64.{add,sub}128` instructions are seen as simpler alternatives for compilers
-to implement in addition to toolchains to generate.
+This alternative not only suffers from the same problems as before with being
+significantly difficult to optimize, but it additionally has significant
+downsides in terms of adding a brand new type to WebAssembly's type system which
+is not a small operation to take on. Given that this doesn't actually make the
+optimization problem easier, this is not seen as a favorable alternative.
+
+#### Overflow flag: `$t = []`
+
+A third possibility of `$t` is to define it as "nothing". These instructions,
+for example, could be:
+
+* `i64.add_overflow_{u,s} : [i64 i64] -> [i64]`
+* `i64.add_with_carry_{u,s} : [i64 i64] -> [i64]`
+
+This would require the definition of new state in the wasm abstract machine
+where a single bit would live (an overflow flag). These instructions would
+implicitly operate on this state and would relieve the compiler from having to
+figure out how to schedule instructions by moving the burden to the producer.
+For example LLVM already supports native platforms with implicit overflow flag
+state so this would be another instance of that.
+
+Purely from the perspective of a WebAssembly compiler, however, this approach
+still has its drawbacks. On x86\_64, for example, many instruction clobber flags
+which means the compiler would have to meticulously save and restore the flags
+around instructions because there is no guarantee that `i64.add_with_carry_u`
+is adjacent to `i64.add_overflow_u`. Platforms like aarch64 might be easier
+where instructions opt-in to modifying flags, but platforms like riscv64 which
+don't have a flags register at all would still be equally inconvenienced as
+before.
+
+It's worth noting that this alternative would additionally require new
+instructions to move in and out of this state. For example if there are two
+overflow flags live at the same time a WebAssembly compiler would need to modify
+and update this flag appropriately. This addition would also mean that
+`i64.add_with_carry_*` would be one of the first instructions that would operate
+on implicit state rather than explicit operands.
+
+#### Overflow flags: Summary
+
+Modeling a native platform's overflow flag as a value, for example `i32`, is not
+an accurate reflection of how native architectures work. Efficiently bridging
+this gap in expressivity is extremely difficult for existing compilers as this
+is unlike any other compilation problem that WebAssembly compilers deal with
+today. The chosen type representation, be it `i1` or `i32`, does not
+significantly reduce the complexity of this problem, too.
+
+Attempting to model an overflow flag as implicit machine state in WebAssembly
+itself is significantly hindered due to native platform differences in how this
+state is managed. Implicit state alone still requires a significant increase
+in the complexity of existing compilers to bridge these differences. Reducing
+this complexity cost would require further changes to be made to this
+alternative.
+
+This proposal's instructions, `i64.{add,sub}128`, [have been
+benchmarked][overflow-flags-numbers] to show that `fib_10000` on x86\_64 goes
+from 120% slower-than-native before this proposal to 9% after. On
+aarch64 the numbers are 72% originally slower-than-native and 2%
+faster-than-native afterwards. The implementation of `i64.add128` required very
+little optimization work, and that which was implemented was similar to all other
+optimization work already implemented in Cranelift for WebAssembly.
+
+Overall `i64.add128` is expected to be a small addition to WebAssembly which is
+not significantly difficult for runtimes to implement. It's additionally
+expected, in the case of wide arithmetic, to reap the lion's share of the
+performance benefits and close the gap with native platforms. This contrasts
+`*.add_with_carry_*` which, while more general, carries significant complexity
+to close the performance gap with native.
+
+[overflow-flags-numbers]: https://github.com/WebAssembly/128-bit-arithmetic/issues/2#issuecomment-2307646174
 
 ### Alternative: 128-bit multiplication
 
