@@ -1,14 +1,18 @@
-# 128-bit arithmetic
+# Wide Arithmetic
 
 ## Motivation
 
-There are a number of use cases for 128-bit numbers and arithmetic in source
-languages today such as:
+There are a number of use cases for arithmetic on larger-than-64-bit numbers in
+source languages today:
 
 * Aribtrary precision math - many languages have a bignum-style library which is
   an arbitrary precision integer. For example libgmp in C, numbers Python,
   `BigInt` in JS, etc. Big integers have a range of specific applications as
   well which can include being integral portions of cryptographic algorithms.
+
+* Fixed but wider-than-64 precision math - cryptographic algorithms often use
+  128-bit or 256-bit integers for example and often need to
+  add/subtract/multiply/divide these operands.
 
 * Checking for overflow - some programs may want to check for overflow when
   performing arithmetic operations, such as seeing if a 64-bit addition
@@ -27,7 +31,7 @@ The goal of this proposal is to close this performance gap between native and
 WebAssembly by adding new instructions which enable more efficient lowerings of
 128-bit arithmetic operations.
 
-### WebAssembly today with 128-bit arithmetic
+### WebAssembly today with Wide arithmetic
 
 [This is an example](https://godbolt.org/z/fMdjqvEaq) of what LLVM emits today
 for 128-bit operations in source languages. Notably:
@@ -285,7 +289,7 @@ plaininstr_l ::= ...
 > to summarize investigations and results of that issue. See [#6] for more
 > in-depth discussion too.
 
-[#6]: https://github.com/WebAssembly/128-bit-arithmetic/issues/6
+[#6]: https://github.com/WebAssembly/wide-arithmetic/issues/6
 
 No current native platform has a single instruction for 128-bit addition or
 subtraction. On x86\_64 and aarch64 for example these operations are implemented
@@ -464,13 +468,13 @@ performance benefits and close the gap with native platforms. This contrasts
 `*.add_with_carry_*` which, while more general, carries significant complexity
 to close the performance gap with native.
 
-[overflow-flags-numbers]: https://github.com/WebAssembly/128-bit-arithmetic/issues/2#issuecomment-2307646174
+[overflow-flags-numbers]: https://github.com/WebAssembly/wide-arithmetic/issues/2#issuecomment-2307646174
 
 ### Alternative: 128-bit multiplication
 
 > **Note**: this was historically discussed in some more depth at [#11].
 
-[#11]: https://github.com/WebAssembly/128-bit-arithmetic/issues/11
+[#11]: https://github.com/WebAssembly/wide-arithmetic/issues/11
 
 Instead of `i64.mul_wide_{s,u}` it would be possible to instead add `i64.mul128`
 which exposes a full 128-bit-by-128-bit multiplication. This is a "cleaner"
@@ -542,7 +546,7 @@ registers.
 
 > **Note**: this section is also being discussed in [#15].
 
-[#15]: https://github.com/WebAssembly/128-bit-arithmetic/issues/15
+[#15]: https://github.com/WebAssembly/wide-arithmetic/issues/15
 
 Native ISAs generally do not have support for 128-bit division. The x86-64 ISA
 has the ability to divide a 128-bit value by a 64-bit value producing a 64-bit
@@ -576,7 +580,7 @@ Overall the meager performance gains and possibility of optimizing preexisting
 patterns has led to this proposal not including comparison-related instructions
 at this time.
 
-[#4]: https://github.com/WebAssembly/128-bit-arithmetic/issues/4
+[#4]: https://github.com/WebAssembly/wide-arithmetic/issues/4
 [bytecodealliance/wasmtime#9176]: https://github.com/bytecodealliance/wasmtime/pull/9176
 
 ### Alternative: Why not add shift or rotate instructions?
@@ -606,4 +610,4 @@ instructions related to 128-bit integers.
 
 [`shld`]: https://www.felixcloutier.com/x86/shld
 [`shrd`]: https://www.felixcloutier.com/x86/shrd
-[#5]: https://github.com/WebAssembly/128-bit-arithmetic/issues/5
+[#5]: https://github.com/WebAssembly/wide-arithmetic/issues/5

@@ -1,11 +1,11 @@
-# 128-bit arithmetic proposal for WebAssembly.
+# Wide Arithmetic proposal for WebAssembly.
 
 This repository is a clone of
 [`WebAssembly/spec`](https://github.com/WebAssembly/spec/). It is meant for
 discussion, prototype specification, and implementation of a proposal to add
-support for 128-bit arithmetic instructions for WebAssembly.
+support for wide arithmetic instructions for WebAssembly.
 
-* See the [overview](./proposals/128-bit-arithmetic/Overview.md) for a
+* See the [overview](./proposals/wide-arithmetic/Overview.md) for a
   high-level summary and rationale of the proposal.
 
 Original README from upstream repository follows...
