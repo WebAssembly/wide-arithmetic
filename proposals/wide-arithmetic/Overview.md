@@ -279,7 +279,42 @@ plaininstr_l ::= ...
 
 ## Implementation Status
 
-... TODO ...
+Tests:
+
+* [ ] Core spec tests
+  * [example test in Wasmtime](https://github.com/bytecodealliance/wasmtime/blob/bc6b0fe4cb7c0d6f2fa436e185411db705e4a4ff/tests/misc_testsuite/wide-arithmetic.wast)
+
+Engines:
+
+* [x] [Wasmtime](https://github.com/bytecodealliance/wasmtime/pull/9403)
+* [ ] Reference interpreter
+
+Toolchains:
+
+* [x] [LLVM](https://github.com/llvm/llvm-project/pull/111598)
+
+Binary Decoders:
+
+* [x] [`wasmparser` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
+* [ ] Reference interpreter
+
+Validation:
+
+* [x] [`wasmparser` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
+* [ ] Reference interpreter
+
+Binary encoders:
+
+* [x] [`wasm-encoder` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
+
+Text parsers:
+
+* [x] [`wast` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
+* [ ] Reference interpreter
+
+Fuzzing and test-case generation:
+
+* [x] [`wasm-smith` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
 
 ## Alternatives
 
