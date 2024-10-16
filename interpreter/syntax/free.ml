@@ -95,6 +95,7 @@ let rec instr (e : instr) =
     memories zero
   | MemoryInit x -> memories zero ++ datas (var x)
   | DataDrop x -> datas (var x)
+  | Binary128 _ | BinaryWide _ -> empty
 
 and block (es : instr list) =
   let free = list instr es in {free with labels = shift free.labels}

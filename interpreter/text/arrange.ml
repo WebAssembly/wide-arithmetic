@@ -155,6 +155,14 @@ struct
     | TruncSatSF64 -> "trunc_sat_f64_s"
     | TruncSatUF64 -> "trunc_sat_f64_u"
     | ReinterpretFloat -> "reinterpret_f" ^ xx
+
+  let binop128 op = match op with
+    | Add128 -> "add128"
+    | Sub128 -> "sub128"
+
+  let binop_wide op = match op with
+    | MulS -> "mul_wide_s"
+    | MulU -> "mul_wide_u"
 end
 
 module FloatOp =
@@ -504,6 +512,8 @@ let rec instr e =
     | VecSplat op -> vec_splatop op, []
     | VecExtract op -> vec_extractop op, []
     | VecReplace op -> vec_replaceop op, []
+    | Binary128 op -> "i64." ^ (IntOp.binop128 op), []
+    | BinaryWide op -> "i64." ^ (IntOp.binop_wide op), []
   in Node (head, inner)
 
 let const head c =
