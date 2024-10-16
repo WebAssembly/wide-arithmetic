@@ -281,8 +281,7 @@ plaininstr_l ::= ...
 
 Tests:
 
-* [ ] Core spec tests
-  * [example test in Wasmtime](https://github.com/bytecodealliance/wasmtime/blob/bc6b0fe4cb7c0d6f2fa436e185411db705e4a4ff/tests/misc_testsuite/wide-arithmetic.wast)
+* [x] [Core spec tests](https://github.com/WebAssembly/wide-arithmetic/pull/22)
 
 Engines:
 
