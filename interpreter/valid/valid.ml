@@ -514,6 +514,12 @@ let rec check_instr (c : context) (e : instr) (s : infer_result_type) : op_type 
       "invalid lane index";
     [t; NumType t2] --> [t]
 
+  | Binary128 _ ->
+    [NumType I64Type; NumType I64Type; NumType I64Type; NumType I64Type] --> [NumType I64Type; NumType I64Type]
+
+  | BinaryWide _ ->
+    [NumType I64Type; NumType I64Type] --> [NumType I64Type; NumType I64Type]
+
 and check_seq (c : context) (s : infer_result_type) (es : instr list)
   : infer_result_type =
   match es with

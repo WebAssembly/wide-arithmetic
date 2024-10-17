@@ -728,6 +728,11 @@ struct
     | VecReplace (V128 (F32x4 (V128Op.Replace i))) -> vecop 0x20l; byte i
     | VecReplace (V128 (F64x2 (V128Op.Replace i))) -> vecop 0x22l; byte i
 
+    | Binary128 Add128 -> op 0xfc; u32 0x13l
+    | Binary128 Sub128 -> op 0xfc; u32 0x14l
+    | BinaryWide MulS -> op 0xfc; u32 0x15l
+    | BinaryWide MulU -> op 0xfc; u32 0x16l
+
   let const c =
     list instr c.it; end_ ()
 

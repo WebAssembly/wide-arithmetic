@@ -281,13 +281,12 @@ plaininstr_l ::= ...
 
 Tests:
 
-* [ ] Core spec tests
-  * [example test in Wasmtime](https://github.com/bytecodealliance/wasmtime/blob/bc6b0fe4cb7c0d6f2fa436e185411db705e4a4ff/tests/misc_testsuite/wide-arithmetic.wast)
+* [x] [Core spec tests](https://github.com/WebAssembly/wide-arithmetic/pull/22)
 
 Engines:
 
 * [x] [Wasmtime](https://github.com/bytecodealliance/wasmtime/pull/9403)
-* [ ] Reference interpreter
+* [x] [Reference interpreter](https://github.com/WebAssembly/wide-arithmetic/pull/22)
 
 Toolchains:
 
@@ -296,12 +295,12 @@ Toolchains:
 Binary Decoders:
 
 * [x] [`wasmparser` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
-* [ ] Reference interpreter
+* [x] [Reference interpreter](https://github.com/WebAssembly/wide-arithmetic/pull/22)
 
 Validation:
 
 * [x] [`wasmparser` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
-* [ ] Reference interpreter
+* [x] [Reference interpreter](https://github.com/WebAssembly/wide-arithmetic/pull/22)
 
 Binary encoders:
 
@@ -310,7 +309,7 @@ Binary encoders:
 Text parsers:
 
 * [x] [`wast` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
-* [ ] Reference interpreter
+* [x] [Reference interpreter](https://github.com/WebAssembly/wide-arithmetic/pull/22)
 
 Fuzzing and test-case generation:
 

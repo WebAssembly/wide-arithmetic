@@ -500,3 +500,8 @@ let f64x2_pmax = VecBinary (V128 (F64x2 V128Op.Pmax))
 let f64x2_promote_low_f32x4 = VecConvert (V128 (F64x2 V128Op.PromoteLowF32x4))
 let f64x2_convert_low_i32x4_s = VecConvert (V128 (F64x2 V128Op.ConvertSI32x4))
 let f64x2_convert_low_i32x4_u = VecConvert (V128 (F64x2 V128Op.ConvertUI32x4))
+
+let i64_add128 = Binary128 Add128
+let i64_sub128 = Binary128 Sub128
+let i64_mul_wide_s = BinaryWide MulS
+let i64_mul_wide_u = BinaryWide MulU

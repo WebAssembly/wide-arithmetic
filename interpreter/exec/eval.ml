@@ -584,6 +584,14 @@ let rec step (c : config) : config =
         (try Vec (Eval_vec.eval_replaceop replaceop v r) :: vs', []
         with exn -> vs', [Trapping (numeric_error e.at exn) @@ e.at])
 
+      | Binary128 op, Num rhs_hi :: Num rhs_lo :: Num lhs_hi :: Num lhs_lo :: vs ->
+        let (lo, hi) = Eval_num.eval_binop128 op lhs_lo lhs_hi rhs_lo rhs_hi
+        in Num hi :: Num lo :: vs, []
+
+      | BinaryWide op, Num rhs :: Num lhs :: vs ->
+        let (lo, hi) = Eval_num.eval_binop_wide op lhs rhs
+        in Num hi :: Num lo :: vs, []
+
       | _ ->
         let s1 = string_of_values (List.rev vs) in
         let s2 = string_of_value_types (List.map type_of_value (List.rev vs)) in
