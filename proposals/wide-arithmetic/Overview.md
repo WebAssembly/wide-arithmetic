@@ -290,7 +290,8 @@ Engines:
 
 Toolchains:
 
-* [x] [LLVM](https://github.com/llvm/llvm-project/pull/111598)
+* [x] [LLVM / Clang](https://github.com/llvm/llvm-project/pull/111598)
+* [x] [Rust](https://github.com/rust-lang/rust/pull/132077)
 
 Binary Decoders:
 
