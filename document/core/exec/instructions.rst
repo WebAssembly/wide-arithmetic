@@ -181,6 +181,80 @@ Where the underlying operators are non-deterministic, because they may return on
      & (\iff \cvtop^{\sx^?}_{t_1,t_2}(c_1) = \{\})
    \end{array}
 
+.. _exec-binop128:
+
+:math:`\I64\K{.}\binop\K{128}`
+..........................................
+
+1. Assert: due to :ref:`validation <valid-binop128>`, four values of :ref:`value type <syntax-valtype>` :math:`\I64` are on the top of the stack.
+
+2. Pop the value :math:`\I64.\CONST~c_4` from the stack.
+
+3. Pop the value :math:`\I64.\CONST~c_3` from the stack.
+
+4. Pop the value :math:`\I64.\CONST~c_2` from the stack.
+
+5. Pop the value :math:`\I64.\CONST~c_1` from the stack.
+
+6. Let :math:`l` be the result of computing :math:`\iconcat_\K{64,128}(c_1, c_2)`
+
+7. Let :math:`r` be the result of computing :math:`\iconcat_\K{64,128}(c_3, c_4)`
+
+8. Let :math:`c` be the result of computing :math:`\binopF_\K{i128}(l, r)`
+
+9. Let :math:`c_l, c_h` be the result of computing :math:`\isplit_\K{128,64}(c)`
+
+10. Push the value :math:`\I64.\CONST~c_l` to the stack.
+
+11. Push the value :math:`\I64.\CONST~c_h` to the stack.
+
+.. math::
+   \begin{array}{lcl@{\qquad}l}
+   (\I64\K{.}\CONST~c_1)~
+   (\I64\K{.}\CONST~c_2)~
+   (\I64\K{.}\CONST~c_3)~
+   (\I64\K{.}\CONST~c_4)~
+   \I64\K{.}\binop\K{128}
+     &\stepto&
+     (\I64\K{.}\CONST~c_l)~
+     (\I64\K{.}\CONST~c_h)
+     & (\iff c_l, c_h = \isplit_\K{128,64}(\binop_\K{i128}(\iconcat_\K{64,128}(c_1, c_2), \iconcat_\K{64,128}(c_3, c_4))) \\
+   \end{array}
+
+:math:`\I64\K{.}\MULWIDE\K{\_}\sx`
+..........................................
+
+1. Assert: due to :ref:`validation <valid-binop128>`, two values of :ref:`value type <syntax-valtype>` :math:`\I64` are on the top of the stack.
+
+2. Pop the value :math:`\I64.\CONST~c_2` from the stack.
+
+3. Pop the value :math:`\I64.\CONST~c_1` from the stack.
+
+4. Let :math:`l` be the result of computing :math:`\extend^{sx}_{\K{i64},\K{i128}}(c_1)`
+
+5. Let :math:`r` be the result of computing :math:`\extend^{sx}_{\K{i64},\K{i128}}(c_2)`
+
+5. Let :math:`c` be the result of computing :math:`\imul_\K{128}(l, r)`
+
+6. Let :math:`c_l, c_h` be the result of computing :math:`\isplit_\K{128,64}(c)`
+
+7. Push the value :math:`\I64.\CONST~c_l` to the stack.
+
+8. Push the value :math:`\I64.\CONST~c_h` to the stack.
+
+.. math::
+   \begin{array}{lcl@{\qquad}l}
+   (\I64\K{.}\CONST~c_1)~
+   (\I64\K{.}\CONST~c_2)~
+   \I64\K{.}\MULWIDE\K{\_}\sx
+     &\stepto&
+     (\I64\K{.}\CONST~c_l)~
+     (\I64\K{.}\CONST~c_h)
+     & (\iff c_l, c_h = \isplit_\K{128,64}(\imul_\K{128}(
+          \extend^{sx}_{\K{i64},\K{i128}}(c_1),
+          \extend^{sx}_{\K{i64},\K{i128}}(c_2)))) \\
+   \end{array}
+
 
 .. index:: reference instructions, reference
    pair: execution; instruction

@@ -66,6 +66,8 @@ These operations closely match respective operations available in hardware.
      \K{f}\X{nn}\K{.}\CONVERT\K{\_i}\X{mm}\K{\_}\sx \\&&|&
      \K{i}\X{nn}\K{.}\REINTERPRET\K{\_f}\X{nn} ~|~
      \K{f}\X{nn}\K{.}\REINTERPRET\K{\_i}\X{nn} \\&&|&
+     \K{i64.}\binop\K{128} ~|~
+     \K{i64.}\MULWIDE\K{\_}\sx \\&&|&
      \dots \\
    \production{integer unary operator} & \iunop &::=&
      \K{clz} ~|~
@@ -88,9 +90,9 @@ These operations closely match respective operations available in hardware.
      \K{abs} ~|~
      \K{neg} ~|~
      \K{sqrt} ~|~
-     \K{ceil} ~|~ 
-     \K{floor} ~|~ 
-     \K{trunc} ~|~ 
+     \K{ceil} ~|~
+     \K{floor} ~|~
+     \K{trunc} ~|~
      \K{nearest} \\
    \production{floating-point binary operator} & \fbinop &::=&
      \K{add} ~|~

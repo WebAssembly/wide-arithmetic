@@ -8,6 +8,9 @@ support for wide arithmetic instructions for WebAssembly.
 * See the [overview](./proposals/wide-arithmetic/Overview.md) for a
   high-level summary and rationale of the proposal.
 
+* See the [modified spec](https://webassembly.github.io/wide-arithmetic/core/)
+  for the formalization of this proposal.
+
 Original README from upstream repository follows...
 
 --------------------------------------------------------------------------------

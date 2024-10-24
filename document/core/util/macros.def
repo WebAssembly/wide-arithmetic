@@ -439,6 +439,10 @@
 .. |DEMOTE| mathdef:: \xref{syntax/instructions}{syntax-instr-numeric}{\K{demote}}
 .. |REINTERPRET| mathdef:: \xref{syntax/instructions}{syntax-instr-numeric}{\K{reinterpret}}
 
+.. |ADD128| mathdef:: \xref{syntax/instructions}{syntax-instr-numeric}{\K{add128}}
+.. |SUB128| mathdef:: \xref{syntax/instructions}{syntax-instr-numeric}{\K{sub128}}
+.. |MULWIDE| mathdef:: \xref{syntax/instructions}{syntax-instr-numeric}{\K{mul\_wide}}
+
 .. |VCONST| mathdef:: \xref{syntax/instructions}{syntax-instr-vec}{\K{const}}
 .. |SHUFFLE| mathdef:: \xref{syntax/instructions}{syntax-instr-vec}{\K{shuffle}}
 .. |SWIZZLE| mathdef:: \xref{syntax/instructions}{syntax-instr-vec}{\K{swizzle}}
@@ -1176,6 +1180,8 @@
 .. |narrow| mathdef:: \xref{exec/numerics}{op-narrow_u}{\F{narrow}}
 .. |narrowu| mathdef:: \xref{exec/numerics}{op-narrow_u}{\F{narrow}^{\K{u}}}
 .. |narrows| mathdef:: \xref{exec/numerics}{op-narrow_s}{\F{narrow}^{\K{s}}}
+.. |isplit| mathdef:: \xref{exec/numerics}{op-isplit}{\F{isplit}}
+.. |iconcat| mathdef:: \xref{exec/numerics}{op-iconcat}{\F{iconcat}}
 
 
 .. Numerics, meta functions
