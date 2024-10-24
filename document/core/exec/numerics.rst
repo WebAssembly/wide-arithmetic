@@ -1767,9 +1767,9 @@ Conversions
 :math:`\truncu_{M,N}(z)`
 ........................
 
-* If :math:`z` is a NaN, then the result is undefined. 
+* If :math:`z` is a NaN, then the result is undefined.
 
-* Else if :math:`z` is an infinity, then the result is undefined. 
+* Else if :math:`z` is an infinity, then the result is undefined.
 
 * Else if :math:`z` is a number and :math:`\trunc(z)` is a value within range of the target type, then return that value.
 
@@ -1793,9 +1793,9 @@ Conversions
 :math:`\truncs_{M,N}(z)`
 ........................
 
-* If :math:`z` is a NaN, then the result is undefined. 
+* If :math:`z` is a NaN, then the result is undefined.
 
-* Else if :math:`z` is an infinity, then the result is undefined. 
+* Else if :math:`z` is an infinity, then the result is undefined.
 
 * If :math:`z` is a number and :math:`\trunc(z)` is a value within range of the target type, then return that value.
 
@@ -1972,4 +1972,36 @@ Conversions
 .. math::
    \begin{array}{lll@{\qquad}l}
    \narrowu_{M,N}(i) &=& \satu_N(\signed_M(i))
+   \end{array}
+
+
+.. _op-iconcat:
+
+:math:`\iconcat_{M,N}(i_1, i_2)`
+.................................
+
+* Let :math:`h` be the result of :math:`\ishl_N(\extend^u_{M,N}(i_2), M)`
+
+* Return the result of :math:`\ior_N(\extend^u_{M,N}(i_1), h)`
+
+.. math::
+   \begin{array}{lll@{\qquad}l}
+   \iconcat_{M,N}(i_1, i_2) &=& \ior_N(\extend^u_{M,N}(i_1), \ishl_N(\extend^u_{M,N}(i_2), M))
+   \end{array}
+
+
+.. _op-isplit:
+
+:math:`\isplit_{M,N}(i)`
+.................................
+
+* Let :math:`l` be the result of :math:`\wrap_{M,N}(i)`
+
+* Let :math:`h` be the result of :math:`\wrap_{M,N}(\ishru_M(i, N))`
+
+* Return :math:`l, h`
+
+.. math::
+   \begin{array}{lll@{\qquad}l}
+   \isplit_{M,N}(i) &=& \wrap_{M,N}(i), \wrap_{M,N}(\ishru_M(i, N))
    \end{array}
