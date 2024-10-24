@@ -316,6 +316,11 @@ Fuzzing and test-case generation:
 
 * [x] [`wasm-smith` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
 
+Formal specification:
+
+* [x] [PR to update](https://github.com/WebAssembly/wide-arithmetic/pull/25)
+* [x] [Online rendering](https://webassembly.github.io/wide-arithmetic/core/)
+
 ## Alternatives
 
 ### Alternative: Overflow Flags as a value
