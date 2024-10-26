@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Instructions &#8212; WebAssembly 2.0 (Draft 2024-10-17)</title>
+    <title>Instructions &#8212; WebAssembly 2.0 (Draft 2024-10-26)</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -226,6 +226,62 @@ which maps to the generic <span class="math notranslate nohighlight">\(\href{../
   &amp; (\mathrel{\mbox{if}} c_2 \in \href{../syntax/instructions.html#syntax-cvtop}{\mathit{cvtop}}^{\href{../syntax/instructions.html#syntax-sx}{\mathit{sx}}^?}_{t_1,t_2}(c_1)) \\
 (t_1\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_1)~t_2\mathsf{.}\href{../syntax/instructions.html#syntax-cvtop}{\mathit{cvtop}}\mathsf{\_}t_1\mathsf{\_}\href{../syntax/instructions.html#syntax-sx}{\mathit{sx}}^? &amp;\href{../exec/conventions.html#exec-notation}{\hookrightarrow}&amp; \href{../exec/runtime.html#syntax-trap}{\mathsf{trap}}
   &amp; (\mathrel{\mbox{if}} \href{../syntax/instructions.html#syntax-cvtop}{\mathit{cvtop}}^{\href{../syntax/instructions.html#syntax-sx}{\mathit{sx}}^?}_{t_1,t_2}(c_1) = \{\})
+\end{array}\end{split}\]</div>
+</section>
+<section id="xref-syntax-types-syntax-valtype-mathsf-i64-mathsf-xref-syntax-instructions-syntax-binop-mathit-binop-mathsf-128">
+<span id="exec-binop128"></span><h3><span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-binop}{\mathit{binop}}\mathsf{128}\)</span><a class="headerlink" href="#xref-syntax-types-syntax-valtype-mathsf-i64-mathsf-xref-syntax-instructions-syntax-binop-mathit-binop-mathsf-128" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Assert: due to <a class="reference internal" href="../valid/instructions.html#valid-binop128"><span class="std std-ref">validation</span></a>, four values of <a class="reference internal" href="../syntax/types.html#syntax-valtype"><span class="std std-ref">value type</span></a> <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\)</span> are on the top of the stack.</p></li>
+<li><p>Pop the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_4\)</span> from the stack.</p></li>
+<li><p>Pop the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_3\)</span> from the stack.</p></li>
+<li><p>Pop the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_2\)</span> from the stack.</p></li>
+<li><p>Pop the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_1\)</span> from the stack.</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(l\)</span> be the result of computing <span class="math notranslate nohighlight">\(\href{../exec/numerics.html#op-iconcat}{\mathrm{iconcat}}_\mathsf{64,128}(c_1, c_2)\)</span></p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(r\)</span> be the result of computing <span class="math notranslate nohighlight">\(\href{../exec/numerics.html#op-iconcat}{\mathrm{iconcat}}_\mathsf{64,128}(c_3, c_4)\)</span></p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(c\)</span> be the result of computing <span class="math notranslate nohighlight">\(\href{../exec/instructions.html#exec-instr-numeric}{\mathit{binop}}_\mathsf{i128}(l, r)\)</span></p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(c_l, c_h\)</span> be the result of computing <span class="math notranslate nohighlight">\(\href{../exec/numerics.html#op-isplit}{\mathrm{isplit}}_\mathsf{128,64}(c)\)</span></p></li>
+<li><p>Push the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_l\)</span> to the stack.</p></li>
+<li><p>Push the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_h\)</span> to the stack.</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl&#64;{\qquad}l}
+(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_1)~
+(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_2)~
+(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_3)~
+(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_4)~
+\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-binop}{\mathit{binop}}\mathsf{128}
+  &amp;\href{../exec/conventions.html#exec-notation}{\hookrightarrow}&amp;
+  (\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_l)~
+  (\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_h)
+  &amp; (\mathrel{\mbox{if}} c_l, c_h = \href{../exec/numerics.html#op-isplit}{\mathrm{isplit}}_\mathsf{128,64}(\href{../syntax/instructions.html#syntax-binop}{\mathit{binop}}_\mathsf{i128}(\href{../exec/numerics.html#op-iconcat}{\mathrm{iconcat}}_\mathsf{64,128}(c_1, c_2), \href{../exec/numerics.html#op-iconcat}{\mathrm{iconcat}}_\mathsf{64,128}(c_3, c_4))) \\
+\end{array}\end{split}\]</div>
+</section>
+<section id="xref-syntax-types-syntax-valtype-mathsf-i64-mathsf-xref-syntax-instructions-syntax-instr-numeric-mathsf-mul-wide-mathsf-xref-syntax-instructions-syntax-sx-mathit-sx">
+<h3><span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{mul\_wide}}\mathsf{\_}\href{../syntax/instructions.html#syntax-sx}{\mathit{sx}}\)</span><a class="headerlink" href="#xref-syntax-types-syntax-valtype-mathsf-i64-mathsf-xref-syntax-instructions-syntax-instr-numeric-mathsf-mul-wide-mathsf-xref-syntax-instructions-syntax-sx-mathit-sx" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Assert: due to <a class="reference internal" href="../valid/instructions.html#valid-binop128"><span class="std std-ref">validation</span></a>, two values of <a class="reference internal" href="../syntax/types.html#syntax-valtype"><span class="std std-ref">value type</span></a> <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\)</span> are on the top of the stack.</p></li>
+<li><p>Pop the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_2\)</span> from the stack.</p></li>
+<li><p>Pop the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_1\)</span> from the stack.</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(l\)</span> be the result of computing <span class="math notranslate nohighlight">\(\href{../exec/numerics.html#op-extend-u}{\mathrm{extend}}^{sx}_{\mathsf{i64},\mathsf{i128}}(c_1)\)</span></p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(r\)</span> be the result of computing <span class="math notranslate nohighlight">\(\href{../exec/numerics.html#op-extend-u}{\mathrm{extend}}^{sx}_{\mathsf{i64},\mathsf{i128}}(c_2)\)</span></p></li>
+</ol>
+<ol class="arabic simple" start="5">
+<li><p>Let <span class="math notranslate nohighlight">\(c\)</span> be the result of computing <span class="math notranslate nohighlight">\(\href{../exec/numerics.html#op-imul}{\mathrm{imul}}_\mathsf{128}(l, r)\)</span></p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(c_l, c_h\)</span> be the result of computing <span class="math notranslate nohighlight">\(\href{../exec/numerics.html#op-isplit}{\mathrm{isplit}}_\mathsf{128,64}(c)\)</span></p></li>
+<li><p>Push the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_l\)</span> to the stack.</p></li>
+<li><p>Push the value <span class="math notranslate nohighlight">\(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}.\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_h\)</span> to the stack.</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl&#64;{\qquad}l}
+(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_1)~
+(\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_2)~
+\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{mul\_wide}}\mathsf{\_}\href{../syntax/instructions.html#syntax-sx}{\mathit{sx}}
+  &amp;\href{../exec/conventions.html#exec-notation}{\hookrightarrow}&amp;
+  (\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_l)~
+  (\href{../syntax/types.html#syntax-valtype}{\mathsf{i64}}\mathsf{.}\href{../syntax/instructions.html#syntax-instr-numeric}{\mathsf{const}}~c_h)
+  &amp; (\mathrel{\mbox{if}} c_l, c_h = \href{../exec/numerics.html#op-isplit}{\mathrm{isplit}}_\mathsf{128,64}(\href{../exec/numerics.html#op-imul}{\mathrm{imul}}_\mathsf{128}(
+       \href{../exec/numerics.html#op-extend-u}{\mathrm{extend}}^{sx}_{\mathsf{i64},\mathsf{i128}}(c_1),
+       \href{../exec/numerics.html#op-extend-u}{\mathrm{extend}}^{sx}_{\mathsf{i64},\mathsf{i128}}(c_2)))) \\
 \end{array}\end{split}\]</div>
 </section>
 </section>
