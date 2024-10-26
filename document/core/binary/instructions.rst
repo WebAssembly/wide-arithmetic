@@ -461,6 +461,18 @@ whereas the actual opcode is encoded by a variable-length :ref:`unsigned integer
      \hex{FC}~~7{:}\Bu32 &\Rightarrow& \I64.\TRUNC\K{\_sat\_}\F64\K{\_u} \\
    \end{array}
 
+Wide arithmetic instructions are encoded similarly to saturating instructions
+above.
+
+.. math::
+   \begin{array}{llclll}
+   \production{instruction} & \Binstr &::=& \dots && \phantom{thisshouldbeenough} \\&&|&
+     \hex{FC}~~19{:}\Bu32 &\Rightarrow& \I64.\ADD128 \\ &&|&
+     \hex{FC}~~20{:}\Bu32 &\Rightarrow& \I64.\SUB128 \\ &&|&
+     \hex{FC}~~21{:}\Bu32 &\Rightarrow& \I64.\MULWIDE\K{\_s} \\ &&|&
+     \hex{FC}~~22{:}\Bu32 &\Rightarrow& \I64.\MULWIDE\K{\_u} \\
+   \end{array}
+
 
 .. index:: vector instruction
    pair: binary format; instruction
