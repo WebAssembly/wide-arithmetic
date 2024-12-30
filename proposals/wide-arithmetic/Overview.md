@@ -5,7 +5,7 @@
 There are a number of use cases for arithmetic on larger-than-64-bit numbers in
 source languages today:
 
-* Aribtrary precision math - many languages have a bignum-style library which is
+* Arbitrary precision math - many languages have a bignum-style library which is
   an arbitrary precision integer. For example libgmp in C, numbers Python,
   `BigInt` in JS, etc. Big integers have a range of specific applications as
   well which can include being integral portions of cryptographic algorithms.
