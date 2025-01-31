@@ -261,7 +261,7 @@ instr ::= ...
 
 > **Note**: opcodes 0-7 are `*.trunc_sat_*` instructions, 8-17 are bulk-memory
 > and reference-types `{table,memory}.{copy,fill,init}`, `{elem,data}.drop`, and
-> `table.grow`. Opcode 18 is proposed to be `memory.discord`.
+> `table.grow`. Opcode 18 is proposed to be `memory.discard`.
 
 ### Text Format
 
