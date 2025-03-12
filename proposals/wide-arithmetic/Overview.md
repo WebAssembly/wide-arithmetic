@@ -287,6 +287,7 @@ Engines:
 
 * [x] [Wasmtime](https://github.com/bytecodealliance/wasmtime/pull/9403)
 * [x] [Reference interpreter](https://github.com/WebAssembly/wide-arithmetic/pull/22)
+* [x] [Wasmi](https://github.com/wasmi-labs/wasmi/pull/1383)
 
 Toolchains:
 
