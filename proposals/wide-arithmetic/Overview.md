@@ -419,10 +419,26 @@ of the "overflow flag as a value" model:
   optimizing use of the flags register due to its unique nature.
 
 Improving the code generation of these instructions in Cranelift/Wasmtime would
-require significant investment into specialized optimizations just for these
-instructions (e.g. a peephole pass after lowering or significantly different IR
-constructs). It's predicted that similar significant investments would be
-required to optimize other compilers as well.
+require optimizations such as:
+
+* Detecting during lowering that `i64.add_with_carry_u` is directly after
+  `i64.add_overflow_u`, the carry flag is an input, and the carry flag isn't
+  used again. When all of these starts align it's possible to leave the overflow
+  flag in the EFLAGS register. Currently this is not feasible in
+  Cranelift/Wasmtime and it's predicted that similar significant investments
+  would be required to optimize other compilers as well.
+
+* Fuse WebAssembly-level instructions into a single complier "IR node". For
+  example the above example could be fused into an internal "add128" instruction
+  specific to just a compiler itself. This is predicted to be less work than the
+  above bullet but still a non-trivial investment. This sort of analysis is also
+  much easier/harder depending on the exact type of `$t`, for example when `$t =
+  i32` in this case here compiler would have to do additional analyses to prove
+  that the range of the input value is `[0, 1]`.
+
+Overall it's expected that there will be significant work necessary to, somehow,
+fuse the two native instructions together to optimize handling of the overflow
+flag.
 
 #### Overflow flag: `$t = i1`
 
@@ -439,13 +455,28 @@ if the type were known to be `i1` then the `movzbl %dl,%r10d` instruction would
 not be necessary and the `add $0xffffffff,%r10d` could be shrunk to
 `add $0xff,%r10b`. Otherwise though there's still the same problems of moving
 out of the flags register for lowering and moving back in, which is a
-significant slowdown compared to the optimal lowering.
+significant slowdown compared to the optimal lowering. In essence somehow fusing
+together these WebAssembly instructions into a native instruction pair is
+required.
 
-This alternative not only suffers from the same problems as before with being
-significantly difficult to optimize, but it additionally has significant
-downsides in terms of adding a brand new type to WebAssembly's type system which
-is not a small operation to take on. Given that this doesn't actually make the
-optimization problem easier, this is not seen as a favorable alternative.
+It's worth mentioning though that if a compiler were to fuse WebAssembly
+instructions together into a single IR node, before lowering to native
+instructions, it will be easier with an `i1` type than with another type. Using
+`i1` statically shows that the value is in the range `[0, 1]` which can make
+some fusing optimizations easier.
+
+This alternative additionally has significant downsides in terms of adding a
+brand new type to WebAssembly's type system which is not a small operation to
+take on. For example all engines need to be updated to understand a new value
+type, an ABI needs to be designed, various other instructions would be needed to
+convert to/from an `i1`, etc. This is expected to be a large amount of work
+relative to the gain here.
+
+The conclusion at this time is that while `i1` might help fusing instructions
+together optimization passes for compilers the cost of adding it to all of
+WebAssembly isn't worth it at this time. In other words the extra analysis a
+compiler would have to do to prove an `i32`, for example, is in the range
+`[0, 1]` is expected to be much simpler relative to adding a new value type.
 
 #### Overflow flag: `$t = []`
 
@@ -482,10 +513,13 @@ on implicit state rather than explicit operands.
 
 Modeling a native platform's overflow flag as a value, for example `i32`, is not
 an accurate reflection of how native architectures work. Efficiently bridging
-this gap in expressivity is extremely difficult for existing compilers as this
-is unlike any other compilation problem that WebAssembly compilers deal with
-today. The chosen type representation, be it `i1` or `i32`, does not
-significantly reduce the complexity of this problem, too.
+this gap in expressivity is unlike any other compilation problem that
+WebAssembly compilers deal with today by requiring separate WebAssembly
+instructions are across each other are fused together somehow to internally
+adjacent native instructions along the compilation pipeline. For `i32` as a
+representation it means that compilers additionally need to perform range
+analysis of values to determine such a fusing of valid, and while `i1` helps the
+situation it has orthogonal drawbacks of adding a new value type to WebAssembly.
 
 Attempting to model an overflow flag as implicit machine state in WebAssembly
 itself is significantly hindered due to native platform differences in how this
@@ -507,9 +541,102 @@ not significantly difficult for runtimes to implement. It's additionally
 expected, in the case of wide arithmetic, to reap the lion's share of the
 performance benefits and close the gap with native platforms. This contrasts
 `*.add_with_carry_*` which, while more general, carries significant complexity
-to close the performance gap with native.
+to close the performance gap with native. Finally it's predicted that a
+maximally useful `*.add_with_carry_*`-style instruction would want to use `i1`
+instead of `i32` for the overflow flag. This is always possible to add in a
+future proposal to WebAssembly and using 128-bit addition does not close off the
+possibility of adding these instructions in the future.
 
 [overflow-flags-numbers]: https://github.com/WebAssembly/wide-arithmetic/issues/2#issuecomment-2307646174
+
+### Alternative: `i64.add_wide3`
+
+> **Note**: this is an extraction of the discussion in [#6].
+
+A common use case of wide-arithmetic is summing up "BigInt" numbers. This is
+where numbers are typically represented as a list of 64-bit integers and adding
+two of them together is basically exactly the `i64.add_with_carry_u` instruction
+above. In pseudocode the meat of a bigint addition loop is:
+
+```rust
+let mut carry: i1 = 0;
+let a: &mut [u64] = ...;
+let b: &[u64] = ...;
+for (a, b) in a.iter_mut().zip(b) {
+    (*a, carry) = i64_add_with_carry_u(*a, *b, carry);
+}
+// ... process `carry` remainder next ...
+```
+
+This means that a bigint addition loop can be exactly modeled with a single
+WebAssembly instruction. On x64 this might be lowered as:
+
+```
+mov %c, 0  ;; register %c holds the carry between loop iterations
+start:
+  mov %a, %c  ;; free up %c as early as possible to help the pipeline
+  xor %c, %c  ;; prepare for `setb`
+  add %a, (%addr_of_a)
+  adc %a, (%addr_of_b)
+  setb %c
+  mov (%addr_of_a), %a
+
+  ;; ...bookkeeping to figure out if we're at the end of the loop...
+  jne start
+```
+
+In lieu of adding an `i1` type to WebAssembly, discussed above, it would also be
+possible to model this instruction as:
+
+```
+i64.add_wide3_u : [i64 i64 i64] -> [i64 i64]
+```
+
+The semantics of this instruction would be to sum all three operands, producing
+the low/high bits of the result. The high bits are guaranteed to be in the range
+of [0, 2] for the full range of inputs, but if one of the inputs can be proven
+to be in the range of [0, 1] then the output high bits are also in the range [0,
+1] which maps very closely to the `i64.add_with_carry_u` instruction.
+Furthermore this extension of the values could lead to:
+
+```
+i64.add_wide_u : [i64 i64] -> [i64 i64]
+```
+
+Which is the same idea, but the carry flag is modeled as `i64` here. This
+approach can suit bigint addition well and was prototyped in V8 and showed good
+performance. When additionally coupled with a simple range analysis to prove
+an input to `64.add_wide3_u` was in the range [0, 1] this resulted in a small
+speedup as well, getting even closer to native.
+
+These instructions, however, can be modeled with `i64.add128` as well:
+
+```
+i64.add_wide_u(a, b)     ≡ i64.add128(a, 0, b, 0)
+i64.add_wide3_u(a, b, c) ≡ i64.add128(i64.add128(a, 0, b, 0), c, 0)
+```
+
+Encoding the extra `i64.const 0` operands to `i64.add128` is less
+space-efficient than using `i64.add_wide*` but semantically these constructs map
+to the same semantics. This means that if `i64.add128` is used as a primitive
+it's expected that a simple compiler analysis can be used to transform
+`i64.add128` to these nodes (this is how the original V8 prototype worked).
+
+Coupled with the fact that these instructions are a generalization of the truly
+desired semantics, which is to take/produce `i1` instead of `i64`, it's
+currently concluded to defer this alternative. With an `i1` type these
+instructions are exactly the `i64.add_{overflow,with_carry}_u` alternatives from
+above:
+
+```
+i64.add_wide_u(a, b)     ≡ i64.add_overflow(a, b)
+i64.add_wide3_u(a, b, c) ≡ i64.add_with_carry_u(a, b, c)
+```
+
+So in effect, due to all-`i64` not being the ideal type signature and the
+complexities of adding `i1` as a new value type, these instructions are not
+chosen at this time. Instead they're modeled as `i64.add128` and engines are
+left to optimize internally if necessary.
 
 ### Alternative: 128-bit multiplication
 
