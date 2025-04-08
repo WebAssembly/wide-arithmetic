@@ -4,7 +4,7 @@ This repository is a clone of
 [`WebAssembly/spec`](https://github.com/WebAssembly/spec/). It is meant for
 discussion, prototype specification, and implementation of a proposal to add
 support for wide arithmetic instructions for WebAssembly. This proposal is
-currently [at phase 2 in the proposals process][phase].
+currently [at phase 3 in the proposals process][phase].
 
 [phase]: https://github.com/WebAssembly/proposals
 
