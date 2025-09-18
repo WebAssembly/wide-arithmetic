@@ -1552,7 +1552,208 @@ spectec 0.5 generator
 ===== ../test-interpreter/spec-test-3/utf8-invalid-encoding.wast =====
 - 0/0 (100.00%)
 
-Total [60340/60340] (100.00%)
+===== ../test-interpreter/spec-test-3/wide-arithmetic.wast =====
+../test-interpreter/spec-test-3/wide-arithmetic.wast:25.1-28.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:25.1-28.44 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:29.1-32.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:29.1-32.44 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:33.1-36.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:33.1-36.44 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:37.1-40.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:37.1-40.44 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:43.1-46.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:43.1-46.44 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:47.1-50.46
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:47.1-50.46 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:51.1-54.46
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:51.1-54.46 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:55.1-58.46
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:55.1-58.46 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:61.1-62.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:61.1-62.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:63.1-64.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:63.1-64.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:65.1-66.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:65.1-66.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:67.1-68.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:67.1-68.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:69.1-70.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:69.1-70.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:71.1-72.46
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:71.1-72.46 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:73.1-74.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:73.1-74.45 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:77.1-80.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:77.1-80.64 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:81.1-84.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:81.1-84.64 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:85.1-88.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:85.1-88.45 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:89.1-92.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:89.1-92.44 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:93.1-96.46
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:93.1-96.46 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:97.1-100.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:97.1-100.45 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:101.1-104.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:101.1-104.45 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:105.1-108.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:105.1-108.44 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:109.1-112.62
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:109.1-112.62 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:113.1-116.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:113.1-116.64 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:117.1-120.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:117.1-120.45 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:121.1-124.63
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:121.1-124.63 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:125.1-128.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:125.1-128.44 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:129.1-132.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:129.1-132.64 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:133.1-136.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:133.1-136.64 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:137.1-140.81
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:137.1-140.81 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:141.1-144.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:141.1-144.44 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:145.1-148.63
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:145.1-148.63 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:149.1-152.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:149.1-152.64 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:153.1-156.62
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:153.1-156.62 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:160.1-163.81
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:160.1-163.81 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:164.1-167.82
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:164.1-167.82 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:168.1-171.62
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:168.1-171.62 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:172.1-175.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:172.1-175.64 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:176.1-179.63
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:176.1-179.63 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:180.1-183.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:180.1-183.45 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:184.1-187.81
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:184.1-187.81 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:188.1-191.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:188.1-191.44 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:192.1-195.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:192.1-195.44 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:196.1-199.46
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:196.1-199.46 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:200.1-203.63
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:200.1-203.63 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:204.1-207.62
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:204.1-207.62 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:208.1-211.63
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:208.1-211.63 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:212.1-215.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:212.1-215.45 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:216.1-219.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:216.1-219.45 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:220.1-223.80
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:220.1-223.80 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:224.1-227.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:224.1-227.44 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:228.1-231.81
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:228.1-231.81 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:232.1-235.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:232.1-235.64 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:236.1-239.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:236.1-239.64 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:242.1-243.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:242.1-243.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:244.1-245.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:244.1-245.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:246.1-247.64
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:246.1-247.64 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:248.1-249.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:248.1-249.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:250.1-251.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:250.1-251.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:252.1-253.80
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:252.1-253.80 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:254.1-255.82
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:254.1-255.82 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:256.1-257.62
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:256.1-257.62 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:258.1-259.62
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:258.1-259.62 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:260.1-261.46
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:260.1-261.46 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:262.1-263.62
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:262.1-263.62 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:264.1-265.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:264.1-265.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:266.1-267.61
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:266.1-267.61 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:268.1-269.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:268.1-269.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:270.1-271.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:270.1-271.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:272.1-273.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:272.1-273.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:274.1-275.62
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:274.1-275.62 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:276.1-277.46
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:276.1-277.46 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:278.1-279.81
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:278.1-279.81 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:280.1-281.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:280.1-281.44 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:284.1-285.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:284.1-285.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:286.1-287.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:286.1-287.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:288.1-289.81
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:288.1-289.81 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:290.1-291.63
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:290.1-291.63 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:292.1-293.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:292.1-293.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:294.1-295.63
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:294.1-295.63 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:296.1-297.61
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:296.1-297.61 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:298.1-299.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:298.1-299.45 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:300.1-301.81
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:300.1-301.81 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:302.1-303.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:302.1-303.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:304.1-305.63
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:304.1-305.63 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:306.1-307.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:306.1-307.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:308.1-309.63
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:308.1-309.63 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:310.1-311.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:310.1-311.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:312.1-313.80
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:312.1-313.80 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:314.1-315.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:314.1-315.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:316.1-317.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:316.1-317.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:318.1-319.81
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:318.1-319.81 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:320.1-321.45
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:320.1-321.45 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:322.1-323.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:322.1-323.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:385.1-388.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:385.1-388.44 (Algorithm not found: ADD128 (interpreting CaseV(ADD128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:389.1-392.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:389.1-392.44 (Algorithm not found: SUB128 (interpreting CaseV(SUB128, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:393.1-394.46
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:393.1-394.46 (Algorithm not found: MUL_WIDE_S (interpreting CaseV(MUL_WIDE_S, []) at ))
+../test-interpreter/spec-test-3/wide-arithmetic.wast:395.1-396.44
+- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:395.1-396.44 (Algorithm not found: MUL_WIDE_U (interpreting CaseV(MUL_WIDE_U, []) at ))
+- 12/111 (10.81%)
+
+Total [60352/60451] (99.84%)
 
 == Complete.
 ```

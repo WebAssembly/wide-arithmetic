@@ -3705,6 +3705,19 @@ $$
 
 $$
 \begin{array}[t]{@{}lrrl@{}l@{}}
+& {{\mathit{wideop}}}_{{\mathsf{i}}{N}} & ::= & \mathsf{add{\scriptstyle 128}} & \quad \mbox{if}~ N = 64 \\
+& & | & \mathsf{sub{\scriptstyle 128}} & \quad \mbox{if}~ N = 64 \\
+\end{array}
+$$
+
+$$
+\begin{array}[t]{@{}lrrl@{}l@{}}
+& {{\mathit{extwideop}}}_{{\mathsf{i}}{N}} & ::= & {\mathsf{mul\_wide}}{\mathsf{\_}}{{\mathit{sx}}} & \quad \mbox{if}~ N = 64 \\
+\end{array}
+$$
+
+$$
+\begin{array}[t]{@{}lrrl@{}l@{}}
 & {{\mathit{testop}}}_{{\mathsf{i}}{N}} & ::= & \mathsf{eqz} \\
 \end{array}
 $$
@@ -3999,6 +4012,8 @@ $$
 & & | & {\mathit{numtype}}~{.}~{{\mathit{testop}}}_{{\mathit{numtype}}} \\
 & & | & {\mathit{numtype}}~{.}~{{\mathit{relop}}}_{{\mathit{numtype}}} \\
 & & | & {{\mathit{numtype}}_1~{.}~{{\mathit{cvtop}}}_{{\mathit{numtype}}_2, {\mathit{numtype}}_1}}{\mathsf{\_}}{{\mathit{numtype}}_2} \\
+& & | & {\mathit{numtype}}~{.}~{{\mathit{wideop}}}_{{\mathit{numtype}}} \\
+& & | & {\mathit{numtype}}~{.}~{{\mathit{extwideop}}}_{{\mathit{numtype}}} \\
 & & | & {\mathit{vectype}}{.}\mathsf{const}~{{\mathit{vec}}}_{{\mathit{vectype}}} \\
 & & | & {\mathit{vectype}}~{.}~{\mathit{vvunop}} \\
 & & | & {\mathit{vectype}}~{.}~{\mathit{vvbinop}} \\
@@ -6996,6 +7011,26 @@ C \vdash {{\mathit{nt}}_1~{.}~{\mathit{cvtop}}}{\mathsf{\_}}{{\mathit{nt}}_2} : 
 \end{array}
 $$
 
+$$
+\begin{array}{@{}c@{}}\displaystyle
+\frac{
+}{
+C \vdash {\mathit{nt}}~{.}~{\mathit{wideop}}_{\mathit{nt}} : {\mathit{nt}}~{\mathit{nt}}~{\mathit{nt}}~{\mathit{nt}} \rightarrow {\mathit{nt}}~{\mathit{nt}}
+} \, {[\textsc{\scriptsize T{-}wideop}]}
+\qquad
+\end{array}
+$$
+
+$$
+\begin{array}{@{}c@{}}\displaystyle
+\frac{
+}{
+C \vdash {\mathit{nt}}~{.}~{\mathit{extwideop}}_{\mathit{nt}} : {\mathit{nt}}~{\mathit{nt}} \rightarrow {\mathit{nt}}~{\mathit{nt}}
+} \, {[\textsc{\scriptsize T{-}extwideop}]}
+\qquad
+\end{array}
+$$
+
 \vspace{1ex}
 
 $$
@@ -8298,6 +8333,54 @@ $$
  \multicolumn{4}{@{}l@{}}{\quad
 \begin{array}[t]{@{}l@{}l@{}}
 {{\mathrm{reinterpret}}}_{{{\mathsf{f}}{N}}_1, {{\mathsf{i}}{N}}_2}(f_1) & \quad \mbox{if}~ {|{{\mathsf{f}}{N}}_1|} = {|{{\mathsf{i}}{N}}_2|} \\
+\end{array}
+} \\
+\end{array}
+$$
+
+\vspace{1ex}
+
+$$
+\begin{array}[t]{@{}lcl@{}l@{}}
+{{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(N, i_1, i_2) & = & & \\
+ \multicolumn{4}{@{}l@{}}{\quad
+\begin{array}[t]{@{}l@{}}
+{{\mathrm{ior}}}_{N}({{{{\mathrm{iextend}}}_{N, N}^{\mathsf{u}}}}{(i_1)}, {{\mathrm{ishl}}}_{N}({{{{\mathrm{iextend}}}_{N, N}^{\mathsf{u}}}}{(i_2)}, N)) \\
+\end{array}
+} \\
+\end{array}
+$$
+
+$$
+\begin{array}[t]{@{}lcl@{}l@{}}
+{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(N, i_1) & = & ({{\mathrm{wrap}}}_{N, N}(i_1), {{\mathrm{wrap}}}_{N, N}({{\mathrm{ishr}}}{\mathsf{u}}{{}_{N}(i_1, N)})) \\
+\end{array}
+$$
+
+$$
+\begin{array}[t]{@{}lcl@{}l@{}}
+{{\mathrm{binop{\kern-0.1em\scriptstyle 128}}}}_{{\mathsf{i}}{N}}(N, \mathsf{add{\scriptstyle 128}}, i_1, i_2) & = & {{\mathrm{iadd}}}_{N}(i_1, i_2) \\
+{{\mathrm{binop{\kern-0.1em\scriptstyle 128}}}}_{{\mathsf{i}}{N}}(N, \mathsf{sub{\scriptstyle 128}}, i_1, i_2) & = & {{\mathrm{isub}}}_{N}(i_1, i_2) \\
+\end{array}
+$$
+
+$$
+\begin{array}[t]{@{}lcl@{}l@{}}
+{{\mathrm{wideop}}}_{{\mathsf{i}}{N}, {\mathit{wideop}}}(i_1, i_2, i_3, i_4) & = & & \\
+ \multicolumn{4}{@{}l@{}}{\quad
+\begin{array}[t]{@{}l@{}}
+{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{binop{\kern-0.1em\scriptstyle 128}}}}_{{\mathsf{i}}{N}}(128, {\mathit{wideop}}, {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_1, i_2), {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_3, i_4))) \\
+\end{array}
+} \\
+\end{array}
+$$
+
+$$
+\begin{array}[t]{@{}lcl@{}l@{}}
+{{\mathrm{extwideop}}}_{{\mathsf{i}}{N}, {\mathsf{mul\_wide}}{\mathsf{\_}}{{\mathit{sx}}}}(i_1, i_2) & = & & \\
+ \multicolumn{4}{@{}l@{}}{\quad
+\begin{array}[t]{@{}l@{}}
+{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{imul}}}_{128}({{{{\mathrm{iextend}}}_{N, 128}^{{\mathit{sx}}}}}{(i_1)}, {{{{\mathrm{iextend}}}_{N, 128}^{{\mathit{sx}}}}}{(i_2)})) \\
 \end{array}
 } \\
 \end{array}
@@ -10703,6 +10786,15 @@ $$
 
 $$
 \begin{array}[t]{@{}lrcl@{}l@{}}
+{[\textsc{\scriptsize E{-}wideop}]} \quad & ({\mathit{nt}}{.}\mathsf{const}~c_1)~({\mathit{nt}}{.}\mathsf{const}~c_2)~({\mathit{nt}}{.}\mathsf{const}~c_3)~({\mathit{nt}}{.}\mathsf{const}~c_4)~({\mathit{nt}}~{.}~{\mathit{wideop}}_{\mathit{nt}}) & \hookrightarrow & ({\mathit{nt}}{.}\mathsf{const}~c_5)~({\mathit{nt}}{.}\mathsf{const}~c_6) & \quad \mbox{if}~ (c_5, c_6) \in {{\mathrm{wideop}}}_{{\mathit{nt}}, {\mathit{wideop}}_{\mathit{nt}}}(c_1, c_2, c_3, c_4) \\
+{[\textsc{\scriptsize E{-}extwideop}]} \quad & ({\mathit{nt}}{.}\mathsf{const}~c_1)~({\mathit{nt}}{.}\mathsf{const}~c_2)~({\mathit{nt}}~{.}~{\mathit{extwideop}}_{\mathit{nt}}) & \hookrightarrow & ({\mathit{nt}}{.}\mathsf{const}~c_5)~({\mathit{nt}}{.}\mathsf{const}~c_6) & \quad \mbox{if}~ (c_5, c_6) \in {{\mathrm{extwideop}}}_{{\mathit{nt}}, {\mathit{extwideop}}_{\mathit{nt}}}(c_1, c_2) \\
+\end{array}
+$$
+
+\vspace{1ex}
+
+$$
+\begin{array}[t]{@{}lrcl@{}l@{}}
 {[\textsc{\scriptsize E{-}vvunop}]} \quad & (\mathsf{v{\scriptstyle 128}}{.}\mathsf{const}~c_1)~(\mathsf{v{\scriptstyle 128}}~{.}~{\mathit{vvunop}}) & \hookrightarrow & (\mathsf{v{\scriptstyle 128}}{.}\mathsf{const}~c) & \quad \mbox{if}~ c \in {{\mathit{vvunop}}}{{}_{\mathsf{v{\scriptstyle 128}}}(c_1)} \\
 \end{array}
 $$
@@ -11720,6 +11812,10 @@ $$
 & & | & \mathtt{0xFC}~~5{:}{\mathtt{u32}} & \quad\Rightarrow\quad{} & {\mathsf{i{\scriptstyle 64}}~{.}~\mathsf{trunc\_sat}}{\mathsf{\_}}{\mathsf{f{\scriptstyle 32}}} \\
 & & | & \mathtt{0xFC}~~6{:}{\mathtt{u32}} & \quad\Rightarrow\quad{} & {\mathsf{i{\scriptstyle 64}}~{.}~\mathsf{trunc\_sat}}{\mathsf{\_}}{\mathsf{f{\scriptstyle 64}}} \\
 & & | & \mathtt{0xFC}~~7{:}{\mathtt{u32}} & \quad\Rightarrow\quad{} & {\mathsf{i{\scriptstyle 64}}~{.}~\mathsf{trunc\_sat}}{\mathsf{\_}}{\mathsf{f{\scriptstyle 64}}} \\
+& & | & \mathtt{0xFC}~~13{:}{\mathtt{u32}} & \quad\Rightarrow\quad{} & \mathsf{i{\scriptstyle 64}}~{.}~\mathsf{add{\scriptstyle 128}} \\
+& & | & \mathtt{0xFC}~~14{:}{\mathtt{u32}} & \quad\Rightarrow\quad{} & \mathsf{i{\scriptstyle 64}}~{.}~\mathsf{sub{\scriptstyle 128}} \\
+& & | & \mathtt{0xFC}~~15{:}{\mathtt{u32}} & \quad\Rightarrow\quad{} & \mathsf{i{\scriptstyle 64}}~{.}~\mathsf{mul\_wide} \\
+& & | & \mathtt{0xFC}~~16{:}{\mathtt{u32}} & \quad\Rightarrow\quad{} & \mathsf{i{\scriptstyle 64}}~{.}~\mathsf{mul\_wide} \\
 & & | & \dots \\
 \end{array}
 $$
@@ -13163,6 +13259,10 @@ $$
 & & | & \mbox{‘}\mathtt{i64.reinterpret\_f64}\mbox{’} & \quad\Rightarrow\quad{} & {\mathsf{i{\scriptstyle 64}}~{.}~\mathsf{reinterpret}}{\mathsf{\_}}{\mathsf{f{\scriptstyle 64}}} \\
 & & | & \mbox{‘}\mathtt{f32.reinterpret\_i32}\mbox{’} & \quad\Rightarrow\quad{} & {\mathsf{f{\scriptstyle 32}}~{.}~\mathsf{reinterpret}}{\mathsf{\_}}{\mathsf{i{\scriptstyle 32}}} \\
 & & | & \mbox{‘}\mathtt{f64.reinterpret\_i64}\mbox{’} & \quad\Rightarrow\quad{} & {\mathsf{f{\scriptstyle 64}}~{.}~\mathsf{reinterpret}}{\mathsf{\_}}{\mathsf{i{\scriptstyle 64}}} \\
+& & | & \mbox{‘}\mathtt{i64.add128}\mbox{’} & \quad\Rightarrow\quad{} & \mathsf{i{\scriptstyle 64}}~{.}~\mathsf{add{\scriptstyle 128}} \\
+& & | & \mbox{‘}\mathtt{i64.sub128}\mbox{’} & \quad\Rightarrow\quad{} & \mathsf{i{\scriptstyle 64}}~{.}~\mathsf{sub{\scriptstyle 128}} \\
+& & | & \mbox{‘}\mathtt{i64.mul\_wide\_s}\mbox{’} & \quad\Rightarrow\quad{} & \mathsf{i{\scriptstyle 64}}~{.}~\mathsf{mul\_wide} \\
+& & | & \mbox{‘}\mathtt{i64.mul\_wide\_u}\mbox{’} & \quad\Rightarrow\quad{} & \mathsf{i{\scriptstyle 64}}~{.}~\mathsf{mul\_wide} \\
 & & | & \dots \\
 \end{array}
 $$
