@@ -325,6 +325,8 @@ The instructions ${:ANY.CONVERT_EXTERN} and ${:EXTERN.CONVERT_ANY} allow lossles
 .. _syntax-relop:
 .. _syntax-cvtop:
 .. _syntax-instr-numeric:
+.. _syntax-wideop:
+.. _syntax-extwideop:
 
 Numeric Instructions
 ~~~~~~~~~~~~~~~~~~~~
@@ -332,7 +334,7 @@ Numeric Instructions
 Numeric instructions provide basic operations over numeric :ref:`values <syntax-value>` of specific :ref:`type <syntax-numtype>`.
 These operations closely match respective operations available in hardware.
 
-$${syntax: {sz sx} num_ instr/num unop_ binop_ testop_ relop_ cvtop__}
+$${syntax: {sz sx} num_ instr/num unop_ binop_ testop_ relop_ cvtop__ wideop_ extwideop_}
 
 Numeric instructions are divided by :ref:`number type <syntax-numtype>`.
 For each type, several subcategories can be distinguished:

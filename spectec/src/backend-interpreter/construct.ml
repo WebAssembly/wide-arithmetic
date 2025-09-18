@@ -850,6 +850,10 @@ and al_to_instr': value -> Ast.instr' = function
     ArrayInitElem (al_to_idx idx1, al_to_idx idx2)
   | CaseV ("ANY.CONVERT_EXTERN", []) -> ExternConvert Internalize
   | CaseV ("EXTERN.CONVERT_ANY", []) -> ExternConvert Externalize
+  | CaseV ("ADD128", []) -> Binary128 Add128
+  | CaseV ("SUB128", []) -> Binary128 Sub128
+  | CaseV ("MUL_WIDE_S", []) -> BinaryWide MulS
+  | CaseV ("MUL_WIDE_U", []) -> BinaryWide MulU
   | v -> error_value "instruction" v
 
 let al_to_const: value -> const = al_to_list al_to_instr |> al_to_phrase

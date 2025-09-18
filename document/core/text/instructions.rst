@@ -717,6 +717,17 @@ Numeric Instructions
      \text{i64.extend32\_s} &\Rightarrow& \I64.\EXTEND\K{32\_s} \\
    \end{array}
 
+.. _text-wideop:
+
+.. math::
+   \begin{array}{llclll}
+   \phantom{\production{instruction}} & \phantom{\Tplaininstr_I} &\phantom{::=}& \phantom{thisisenough} && \phantom{thisshouldbeenough} \\[-2ex] &&|&
+     \text{i64.add128} &\Rightarrow& \I64.\ADD128 \\ &&|&
+     \text{i64.sub128} &\Rightarrow& \I64.\SUB128 \\ &&|&
+     \text{i64.mul\_wide\_s} &\Rightarrow& \I64.\MULWIDE\K{\_s} \\ &&|&
+     \text{i64.mul\_wide\_u} &\Rightarrow& \I64.\MULWIDE\K{\_u} \\
+   \end{array}
+
 
 .. index:: vector instruction
    pair: text format; instruction

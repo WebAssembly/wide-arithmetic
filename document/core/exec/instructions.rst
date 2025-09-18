@@ -785,7 +785,7 @@ $${rule: {Step_read/struct.get-*}}
 $${rule-prose: Step/struct.set}
 
 $${rule: {Step/struct.set-*}}
-   
+
 
 .. _exec-array.new:
 
@@ -971,6 +971,20 @@ $${rule: Step_pure/relop}
 $${rule-prose: Step_pure/cvtop}
 
 $${rule: {Step_pure/cvtop-*}}
+
+
+.. _exec-wideop:
+
+$${rule-prose: Step_pure/wideop}
+
+$${rule: {Step_pure/wideop}}
+
+
+.. _exec-extwideop:
+
+$${rule-prose: Step_pure/extwideop}
+
+$${rule: {Step_pure/extwideop}}
 
 
 .. index:: vector instruction
