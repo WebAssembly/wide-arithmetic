@@ -902,6 +902,11 @@ struct
     | VecReplace (V128 (F32x4 V128Op.(Replace i))) -> vecop 0x20l; u8 i
     | VecReplace (V128 (F64x2 V128Op.(Replace i))) -> vecop 0x22l; u8 i
 
+    | Binary128 Add128 -> op 0xfc; u32 0x13l
+    | Binary128 Sub128 -> op 0xfc; u32 0x14l
+    | BinaryWide MulS -> op 0xfc; u32 0x15l
+    | BinaryWide MulU -> op 0xfc; u32 0x16l
+
   and catch c =
     match c.it with
     | Catch (x1, x2) -> byte 0x00; idx x1; idx x2

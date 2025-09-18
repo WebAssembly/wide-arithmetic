@@ -114,6 +114,8 @@ type unop = (I32Op.unop, I64Op.unop, F32Op.unop, F64Op.unop) Value.op
 type binop = (I32Op.binop, I64Op.binop, F32Op.binop, F64Op.binop) Value.op
 type relop = (I32Op.relop, I64Op.relop, F32Op.relop, F64Op.relop) Value.op
 type cvtop = (I32Op.cvtop, I64Op.cvtop, F32Op.cvtop, F64Op.cvtop) Value.op
+type binop128 = Add128 | Sub128
+type binop_wide = MulS | MulU
 
 type vtestop = (V128Op.testop) Value.vecop
 type vrelop = (V128Op.relop) Value.vecop
@@ -245,6 +247,8 @@ and instr' =
   | Compare of relop                     (* numeric comparison *)
   | Unary of unop                        (* unary numeric operator *)
   | Binary of binop                      (* binary numeric operator *)
+  | Binary128 of binop128                (* 128-bit operation taking 4 arguments *)
+  | BinaryWide of binop_wide             (* wide-arithmetic binop *)
   | Convert of cvtop                     (* conversion *)
   | VecConst of vec                      (* constant *)
   | VecTest of vtestop                   (* vector test *)

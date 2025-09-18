@@ -170,7 +170,7 @@ let memory_init x y = MemoryInit (x, y)
 let data_drop x = DataDrop x
 
 let ref_is_null = RefIsNull
-let ref_as_non_null = RefAsNonNull  
+let ref_as_non_null = RefAsNonNull
 let ref_test t = RefTest t
 let ref_cast t = RefCast t
 let ref_eq = RefEq
@@ -585,3 +585,8 @@ let f64x2_relaxed_min = VecBinary (V128 (F64x2 V128Op.RelaxedMin))
 let f64x2_relaxed_max = VecBinary (V128 (F64x2 V128Op.RelaxedMax))
 let i16x8_relaxed_dot_i8x16_i7x16_s = VecBinary (V128 (I16x8 V128Op.RelaxedDot))
 let i32x4_relaxed_dot_i8x16_i7x16_add_s = VecTernary (V128 (I32x4 V128Op.RelaxedDotAddS))
+
+let i64_add128 = Binary128 Add128
+let i64_sub128 = Binary128 Sub128
+let i64_mul_wide_s = BinaryWide MulS
+let i64_mul_wide_u = BinaryWide MulU

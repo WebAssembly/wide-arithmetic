@@ -182,6 +182,7 @@ let rec instr (e : instr) =
   | ArrayInitElem (x, y) -> types (idx x) ++ elems (idx y)
   | ExternConvert _ -> empty
   | Const _ | Test _ | Compare _ | Unary _ | Binary _ | Convert _ -> empty
+  | Binary128 _ | BinaryWide _ -> empty
   | VecConst _ | VecTest _
   | VecUnary _ | VecBinary _ | VecTernary _ | VecCompare _
   | VecConvert _ | VecShift _ | VecBitmask _

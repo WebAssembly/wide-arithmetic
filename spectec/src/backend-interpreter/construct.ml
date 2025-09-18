@@ -1883,6 +1883,10 @@ let rec al_of_instr instr =
     CaseV ("ARRAY.INIT_ELEM", [ al_of_idx idx1; al_of_idx idx2 ])
   | ExternConvert Internalize -> nullary "ANY.CONVERT_EXTERN"
   | ExternConvert Externalize -> nullary "EXTERN.CONVERT_ANY"
+  | Binary128 Add128 -> CaseV ("ADD128", [])
+  | Binary128 Sub128 -> CaseV ("SUB128", [])
+  | BinaryWide MulS -> CaseV ("MUL_WIDE_S", [])
+  | BinaryWide MulU -> CaseV ("MUL_WIDE_U", [])
   (* | _ -> CaseV ("TODO: Unconstructed Wasm instruction (al_of_instr)", []) *)
 
 let al_of_const const = al_of_list al_of_instr const.it

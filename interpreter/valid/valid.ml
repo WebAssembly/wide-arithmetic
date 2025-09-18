@@ -623,7 +623,7 @@ let rec check_instr (c : context) (e : instr) (s : infer_resulttype) : infer_ins
 
   | TableFill x ->
     let TableT (at, _lim, rt) = table c x in
-    [NumT (numtype_of_addrtype at); RefT rt; 
+    [NumT (numtype_of_addrtype at); RefT rt;
       NumT (numtype_of_addrtype at)] --> [], []
 
   | TableCopy (x, y) ->
@@ -950,6 +950,13 @@ let rec check_instr (c : context) (e : instr) (s : infer_resulttype) : infer_ins
     require (I8.to_int_u (lane_replaceop replaceop) < num_lanes replaceop) e.at
       "invalid lane index";
     [t1; t2] --> [t1], []
+
+  | Binary128 _ ->
+    [NumT I64T; NumT I64T; NumT I64T; NumT I64T] --> [NumT I64T; NumT I64T], []
+
+  | BinaryWide _ ->
+    [NumT I64T; NumT I64T] --> [NumT I64T; NumT I64T], []
+
 
 and check_instrs (c : context) (s : infer_resulttype) (es : instr list)
   : infer_resulttype * idx list =
