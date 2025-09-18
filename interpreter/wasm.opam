@@ -12,23 +12,8 @@ depends: [
   "dune" {>= "2.9"}
   "ocaml" {>= "4.12"}
   "menhir" {>= "20220210"}
-  "stdint" {>= "0.7.2"}
   "odoc" {with-doc}
 ]
-build: [
-  ["dune" "subst"] {dev}
-  [
-    "dune"
-    "build"
-    "-p"
-    name
-    "-j"
-    jobs
-    "--promote-install-files=false"
-    "@install"
-    "@runtest" {with-test}
-    "@doc" {with-doc}
-  ]
-  ["dune" "install" "-p" name "--create-install-files" name]
-]
+build: [make "-C" "interpreter"]
+install: [make "-C" "interpreter" "install"]
 dev-repo: "git+https://github.com/WebAssembly/spec.git"

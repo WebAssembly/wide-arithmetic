@@ -6,6 +6,12 @@ W3C_STATUS    = ED
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         = a4
+ROOTDIR       = $(shell dirname `ls -d ../core 2>/dev/null || ls -d ../../core`)/..
+SPECTECDIR    = $(ROOTDIR)/spectec
+SPECTECSPEC   = $(ROOTDIR)/specification/wasm-3.0
+SPECTECEXT    = spectec
+SPECTEC       = $(SPECTECDIR)/spectec
+SPLICEDIR     = _spectec
 BUILDDIR      = _build
 STATICDIR     = _static
 DOWNLOADDIR   = _download
@@ -24,7 +30,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
 .PHONY: usage
 usage:
-	@echo "Please use \`make <target>' where <target> is one of"
+	@echo "Usage: \`make <target>\`' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
 	@echo "  pdf        to make standalone PDF file"
 	@echo "  bikeshed   to make a bikeshed wrapped single large HTML file"
@@ -33,41 +39,9 @@ usage:
 	@echo "  WD-echidna publish the Working Draft tar file via Echidna"
 	@echo "  all        to make all 3"
 	@echo "  publish    to make all and push to gh-pages"
-	@echo "  help       to see more options"
 
 .PHONY: help
-help:
-	@echo "Usage: \`make <target>' where <target> is one of"
-	@echo "  html       to make standalone HTML files"
-	@echo "  pdf        to make standalone PDF file"
-	@echo "  bikeshed   to make a bikeshed wrapped single large HTML file"
-	@echo "  all        to make all 3"
-	@echo "  publish    to make all and push to gh-pages"
-	@echo "  dirhtml    to make HTML files named index.html in directories"
-	@echo "  singlehtml to make a single large HTML file"
-	@echo "  pickle     to make pickle files"
-	@echo "  json       to make JSON files"
-	@echo "  htmlhelp   to make HTML files and a HTML help project"
-	@echo "  qthelp     to make HTML files and a qthelp project"
-	@echo "  applehelp  to make an Apple Help Book"
-	@echo "  devhelp    to make HTML files and a Devhelp project"
-	@echo "  epub       to make an epub"
-	@echo "  epub3      to make an epub3"
-	@echo "  latex      to make LaTeX files, you can set PAPER=a4 or PAPER=letter"
-	@echo "  latexpdf   to make LaTeX files and run them through pdflatex"
-	@echo "  latexpdfja to make LaTeX files and run them through platex/dvipdfmx"
-	@echo "  text       to make text files"
-	@echo "  man        to make manual pages"
-	@echo "  texinfo    to make Texinfo files"
-	@echo "  info       to make Texinfo files and run them through makeinfo"
-	@echo "  gettext    to make PO message catalogs"
-	@echo "  changes    to make an overview of all changed/added/deprecated items"
-	@echo "  xml        to make Docutils-native XML files"
-	@echo "  pseudoxml  to make pseudoxml-XML files for display purposes"
-	@echo "  linkcheck  to check all external links for integrity"
-	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
-	@echo "  coverage   to run coverage check of the documentation (if enabled)"
-	@echo "  dummy      to check syntax errors of document sources"
+help: usage
 
 .PHONY: deploy
 deploy:
@@ -85,6 +59,68 @@ all:	pdf html bikeshed
 .PHONY: main
 main:	macrosok pdf html
 
+
+########################################
+## File generation and SpecTec splicing
+
+GENERATED = appendix/index-instructions.rst
+.INTERMEDIATE: $(GENERATED)
+
+%.rst: %.py
+	(cd `dirname $@`; ./`basename $^`)
+
+
+.PHONY: spectec
+spectec:
+	(cd $(SPECTECDIR); make exe >/dev/null)
+
+SPECTECPAT = $(SPECTECSPEC)/*.$(SPECTECEXT)
+SPECTECFILES = $(shell ls $(SPECTECPAT))
+RSTDIRS = $(shell ls -d [a-z]*/ util/[a-z]*/)
+RSTFILES = $(shell ls -d *.rst [a-z]*/*.rst) $(GENERATED)
+CTRLFILES = $(shell ls Makefile *.* util/*.* util/bikeshed/*.*) $(shell ls static/*)
+ALLFILES = $(RSTDIRS) $(CTRLFILES) _splice  #$(RSTFILES)
+SPLICEDFILES = spectec $(ALLFILES:%=$(SPLICEDIR)/%) $(BUILDDIR)
+
+.PHONY: ls-spectec ls-splice
+ls-spectec:
+	@for F in $(SPECTECFILES); do echo $$F; done
+ls-splice:
+	@for F in $(ALLFILES); do echo $$F; done
+
+$(SPLICEDIR):
+	mkdir -p $@
+
+$(SPLICEDIR)/$(BUILDDIR): $(SPLICEDIR)
+	mkdir -p $@
+
+$(BUILDDIR): $(SPLICEDIR)/$(BUILDDIR)
+	ln -s $< $@
+
+$(RSTDIRS:%=$(SPLICEDIR)/%):: $(SPLICEDIR)
+	mkdir -p $@
+
+$(SPLICEDIR)/util/katex:: util/katex
+	cp -R $< $@   # F it!
+
+$(SPLICEDIR)/_splice: $(SPLICEDIR) $(RSTFILES) $(SPECTECFILES)
+	@echo Modified $?
+	@echo ${if ${filter %.$(SPECTECEXT), $?}, $(RSTFILES), ${filter %.rst, $?}} >$@
+	@echo Splicing `cat $@`
+	@$(SPECTEC) $(SPECTECPAT) --splice-sphinx --latex-macros -p `cat $@` -o $(SPLICEDIR)
+
+#$(RSTFILES:%=$(SPLICEDIR)/%): $(SPLICEDIR)/%: % $(SPECTECFILES)
+#	$(SPECTEC) $(SPECTECFILES) --splice-sphinx -p $< -o $@
+
+$(CTRLFILES:%=$(SPLICEDIR)/%): $(SPLICEDIR)/%: %
+	cp $< $@
+
+######
+
+.PHONY: macrosok
+macrosok:	$(GENERATED)
+	sh util/check_macros.sh
+
 # Dirty hack to avoid rebuilding the Bikeshed version for every push.
 .PHONY: bikeshed-keep
 bikeshed-keep:
@@ -93,31 +129,31 @@ bikeshed-keep:
 	    https://webassembly.github.io/spec/core/bikeshed || \
 	  echo Downloaded Bikeshed.
 
+.PHONY: pdf pdf-nested
+pdf:	$(SPLICEDFILES)
+	(cd $(SPLICEDIR) && make pdf-nested)
+	@echo
+	@echo "Build finished. The PDF is at `pwd`/$(BUILDDIR)/latex/$(NAME).pdf"
 
-GENERATED = appendix/index-instructions.rst
-.INTERMEDIATE: $(GENERATED)
-
-%.rst: %.py
-	(cd `dirname $@`; ./`basename $^`)
-
-.PHONY: macrosok
-macrosok:	$(GENERATED)
-	sh util/check_macros.sh
-
-.PHONY: pdf
-pdf:	$(GENERATED) latexpdf
+pdf-nested:	$(GENERATED) latexpdf
 	mkdir -p $(BUILDDIR)/html/$(DOWNLOADDIR)
 	ln -f $(BUILDDIR)/latex/$(NAME).pdf $(BUILDDIR)/html/$(DOWNLOADDIR)/$(NAME).pdf
 
 
 .PHONY: clean
 clean:
+	rm -rf $(SPLICEDIR)
 	rm -rf $(BUILDDIR)
 	rm -rf $(STATICDIR)
 	rm -f $(GENERATED)
 
-.PHONY: html
-html: $(GENERATED)
+.PHONY: html html-nested
+html:	$(SPLICEDFILES)
+	(cd $(SPLICEDIR) && make html-nested)
+	@echo
+	@echo "Build finished. The HTML pages are in `pwd`/$(BUILDDIR)/html/."
+
+html-nested: $(GENERATED)
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	for file in `ls $(BUILDDIR)/html/*.html`; \
 	do \
@@ -129,23 +165,32 @@ html: $(GENERATED)
 	  sed s:BASEDIR:..:g <$$file >$$file.out; \
 	  mv -f $$file.out $$file; \
 	done
-	@echo
-	@echo "Build finished. The HTML pages are in `pwd`/$(BUILDDIR)/html/."
 
-.PHONY: dirhtml
-dirhtml: $(GENERATED)
-	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
+.PHONY: dirhtml dirhtml-nested
+dirhtml:	$(SPLICEDFILES)
+	(cd $(SPLICEDIR) && make dirhtml-nested)
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/dirhtml."
 
-.PHONY: singlehtml
-singlehtml: $(GENERATED)
-	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/singlehtml
+dirhtml-nested: $(GENERATED)
+	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
+
+.PHONY: singlehtml singlehtml-nested
+singlehtml:	$(SPLICEDFILES)
+	(cd $(SPLICEDIR) && make singlehtml-nested)
 	@echo
 	@echo "Build finished. The HTML page is in $(BUILDDIR)/singlehtml."
 
-.PHONY: bikeshed
-bikeshed: $(GENERATED)
+singlehtml-nested: $(GENERATED)
+	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/singlehtml
+
+.PHONY: bikeshed bikeshed-nested
+bikeshed:	$(SPLICEDFILES)
+	(cd $(SPLICEDIR) && make bikeshed-nested)
+	@echo
+	@echo "Build finished. The HTML page is in $(BUILDDIR)/html/bikeshed/."
+
+bikeshed-nested: $(GENERATED)
 	$(SPHINXBUILD) -b singlehtml -c util/bikeshed \
 		$(ALLSPHINXOPTS) $(BUILDDIR)/bikeshed_singlehtml
 	python3 util/bikeshed_fixup.py $(BUILDDIR)/bikeshed_singlehtml/index.html \
@@ -168,8 +213,6 @@ bikeshed: $(GENERATED)
 		< util/katex_fix.patch
 	cp $(BUILDDIR)/bikeshed_singlehtml/_static/pygments.css \
 		$(BUILDDIR)/html/bikeshed/
-	@echo
-	@echo "Build finished. The HTML page is in $(BUILDDIR)/html/bikeshed/."
 
 .PHONY: WD-tar
 # macOS tar has no “--transform” option (only GNU tar does), so on macOS,
