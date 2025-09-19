@@ -191,14 +191,26 @@ struct
     | TruncSatF32 sx -> "trunc_sat_f32" ^ ext sx
     | TruncSatF64 sx -> "trunc_sat_f64" ^ ext sx
     | ReinterpretFloat -> "reinterpret_f" ^ xx
+end
 
-  let binop128 op = match op with
-    | Add128 -> "add128"
-    | Sub128 -> "sub128"
+module I32Op = struct
+  include IntOp
 
-  let binop_wide op = match op with
-    | MulS -> "mul_wide_s"
-    | MulU -> "mul_wide_u"
+  open Ast.I32Op
+
+  let wideop xx = function (_ : wideop) -> .
+  let extwideop xx = function (_ : extwideop) -> .
+end
+
+module I64Op = struct
+  include IntOp
+
+  let wideop xx = function
+    | Ast.I64Op.Add128 -> "add128"
+    | Ast.I64Op.Sub128 -> "sub128"
+  let extwideop xx = function
+    | Ast.I64Op.MulWide S -> "mul_wide_s"
+    | Ast.I64Op.MulWide U -> "mul_wide_u"
 end
 
 module FloatOp =
@@ -239,6 +251,9 @@ struct
     | PromoteF32 -> "promote_f32"
     | DemoteF64 -> "demote_f64"
     | ReinterpretInt -> "reinterpret_i" ^ xx
+
+  let wideop xx = function (_ : wideop) -> .
+  let extwideop xx = function (_ : extwideop) -> .
 end
 
 module V128Op =
@@ -409,6 +424,15 @@ let oper (iop, fop) op =
   | F64 o -> fop "64" o
   )
 
+let i64oper (i32op, i64op, fop) op =
+  string_of_numtype (type_of_num op) ^ "." ^
+  (match op with
+  | I32 o -> i32op "32" o
+  | I64 o -> i64op "64" o
+  | F32 o -> fop "32" o
+  | F64 o -> fop "64" o
+  )
+
 let voper (vop) op =
   match op with
   | V128 o -> "v128." ^ vop o
@@ -422,6 +446,8 @@ let binop = oper (IntOp.binop, FloatOp.binop)
 let testop = oper (IntOp.testop, FloatOp.testop)
 let relop = oper (IntOp.relop, FloatOp.relop)
 let cvtop = oper (IntOp.cvtop, FloatOp.cvtop)
+let wideop = i64oper (I32Op.wideop, I64Op.wideop, FloatOp.wideop)
+let extwideop = i64oper (I32Op.extwideop, I64Op.extwideop, FloatOp.extwideop)
 
 let vunop = shoper (V128Op.iunop, V128Op.iunop, V128Op.funop)
 let vbinop = shoper (V128Op.ibinop, V128Op.ibinop, V128Op.fbinop)
@@ -599,8 +625,8 @@ let rec instr e =
     | VecSplat op -> vsplatop op, []
     | VecExtract op -> vextractop op, []
     | VecReplace op -> vreplaceop op, []
-    | Binary128 op -> "i64." ^ (IntOp.binop128 op), []
-    | BinaryWide op -> "i64." ^ (IntOp.binop_wide op), []
+    | Wide op -> wideop op, []
+    | Extwide op -> extwideop op, []
   in Node (head, inner)
 
 and catch c =

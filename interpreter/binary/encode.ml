@@ -902,10 +902,16 @@ struct
     | VecReplace (V128 (F32x4 V128Op.(Replace i))) -> vecop 0x20l; u8 i
     | VecReplace (V128 (F64x2 V128Op.(Replace i))) -> vecop 0x22l; u8 i
 
-    | Binary128 Add128 -> op 0xfc; u32 0x13l
-    | Binary128 Sub128 -> op 0xfc; u32 0x14l
-    | BinaryWide MulS -> op 0xfc; u32 0x15l
-    | BinaryWide MulU -> op 0xfc; u32 0x16l
+    | Wide (I64 I64Op.Add128) -> op 0xfc; u32 0x13l
+    | Wide (I64 I64Op.Sub128) -> op 0xfc; u32 0x14l
+    | Wide (I32 _) -> .
+    | Wide (F32 _) -> .
+    | Wide (F64 _) -> .
+    | Extwide (I64 (I64Op.MulWide S)) -> op 0xfc; u32 0x15l
+    | Extwide (I64 (I64Op.MulWide U)) -> op 0xfc; u32 0x16l
+    | Extwide (I32 _) -> .
+    | Extwide (F32 _) -> .
+    | Extwide (F64 _) -> .
 
   and catch c =
     match c.it with

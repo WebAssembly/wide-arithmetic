@@ -56,24 +56,30 @@ struct
     in fun v1 v2 -> f (of_num 1 v1) (of_num 2 v2)
 end
 
-module I32Op = IntOp (I32) (I32Num)
+module I32Op = struct
+  include IntOp (I32) (I32Num)
+
+  let wideop (op: Ast.I32Op.wideop) = match op with _ -> .
+  let extwideop (op: Ast.I32Op.extwideop) = match op with _ -> .
+end
 module I64Op = struct
   include IntOp (I64) (I64Num)
 
+  open Ast.IntOp
   open I64Num
 
-  let binop128 op =
+  let wideop op =
     let f = match op with
-      | Ast.Add128 -> I64.add128
-      | Ast.Sub128 -> I64.sub128
+      | Ast.I64Op.Add128 -> I64.add128
+      | Ast.I64Op.Sub128 -> I64.sub128
     in fun v1 v2 v3 v4 ->
         let (a, b) = f (of_num 1 v1) (of_num 2 v2) (of_num 3 v3) (of_num 4 v4)
         in (to_num a, to_num b)
 
-  let binop_wide op =
+  let extwideop op =
     let f = match op with
-      | Ast.MulS -> I64.mul_wide_s
-      | Ast.MulU -> I64.mul_wide_u
+      | Ast.I64Op.MulWide S -> I64.mul_wide_s
+      | Ast.I64Op.MulWide U -> I64.mul_wide_u
     in fun v1 v2 ->
         let (a, b) = f (of_num 1 v1) (of_num 2 v2)
         in (to_num a, to_num b)
@@ -121,6 +127,9 @@ struct
       | Gt -> FXX.gt
       | Ge -> FXX.ge
     in fun v1 v2 -> f (of_num 1 v1) (of_num 2 v2)
+
+  let wideop (op: Ast.FloatOp.wideop) = match op with _ -> .
+  let extwideop (op: Ast.FloatOp.extwideop) = match op with _ -> .
 end
 
 module F32Op = FloatOp (F32) (F32Num)
@@ -215,5 +224,5 @@ let eval_binop = op I32Op.binop I64Op.binop F32Op.binop F64Op.binop
 let eval_testop = op I32Op.testop I64Op.testop F32Op.testop F64Op.testop
 let eval_relop = op I32Op.relop I64Op.relop F32Op.relop F64Op.relop
 let eval_cvtop = op I32CvtOp.cvtop I64CvtOp.cvtop F32CvtOp.cvtop F64CvtOp.cvtop
-let eval_binop128 = I64Op.binop128
-let eval_binop_wide = I64Op.binop_wide
+let eval_wideop = op I32Op.wideop I64Op.wideop F32Op.wideop F64Op.wideop
+let eval_extwideop = op I32Op.extwideop I64Op.extwideop F32Op.extwideop F64Op.extwideop
