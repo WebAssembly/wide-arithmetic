@@ -8380,7 +8380,7 @@ $$
 {{\mathrm{extwideop}}}_{{\mathsf{i}}{N}, {\mathsf{mul\_wide}}{\mathsf{\_}}{{\mathit{sx}}}}(i_1, i_2) & = & & \\
  \multicolumn{4}{@{}l@{}}{\quad
 \begin{array}[t]{@{}l@{}}
-{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{imul}}}_{128}({{{{\mathrm{iextend}}}_{N, 128}^{{\mathit{sx}}}}}{(i_1)}, {{{{\mathrm{iextend}}}_{N, 128}^{{\mathit{sx}}}}}{(i_2)})) \\
+{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{imul}}}_{128}({{{{\mathrm{iextend}}}_{128, N}^{{\mathit{sx}}}}}{(i_1)}, {{{{\mathrm{iextend}}}_{128, N}^{{\mathit{sx}}}}}{(i_2)})) \\
 \end{array}
 } \\
 \end{array}

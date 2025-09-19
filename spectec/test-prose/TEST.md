@@ -24412,7 +24412,7 @@ The instruction sequence :math:`(\mathsf{block}~{\mathit{blocktype}}~{{\mathit{i
 ............................................................................................................
 
 
-1. Return :math:`{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{imul}}}_{128}({{{{\mathrm{iextend}}}_{N, 128}^{{\mathit{sx}}}}}{(i_1)}, {{{{\mathrm{iextend}}}_{N, 128}^{{\mathit{sx}}}}}{(i_2)}))`.
+1. Return :math:`{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{imul}}}_{128}({{{{\mathrm{iextend}}}_{128, N}^{{\mathit{sx}}}}}{(i_1)}, {{{{\mathrm{iextend}}}_{128, N}^{{\mathit{sx}}}}}{(i_2)}))`.
 
 
 :math:`{\mathrm{zeroop}}({{\mathit{lanetype}'}}{\mathsf{x}}{M_1}, {{\mathit{lanetype}}}{\mathsf{x}}{M_2}, {\mathit{vcvtop}})`
@@ -31998,7 +31998,7 @@ cvtop__ numtype numtype' cvtop__ i_1
 10. Return [$reinterpret__(numtype, numtype', i_1)].
 
 iconcat_ Inn N i_1 i_2
-1. Return $ior_(N, $iextend_($sizenn(Inn), N, U, i_1), $ishl_(N, $iextend_($sizenn(Inn), N, U, i_2), $sizenn(Inn))).
+1. Return $ior_(N, $iextend_(N, $sizenn(Inn), U, i_1), $ishl_(N, $iextend_(N, $sizenn(Inn), U, i_2), $sizenn(Inn))).
 
 isplit_ Inn N i_1
 1. Return ($wrap__(N, $sizenn(Inn), i_1), $wrap__(N, $sizenn(Inn), $ishr_(N, U, i_1, $sizenn(Inn)))).
@@ -32013,7 +32013,7 @@ wideop__ Inn wideop i_1 i_2 i_3 i_4
 1. Return $isplit_(Inn, 128, $wideop_(Inn, 128, wideop, $iconcat_(Inn, 128, i_1, i_2), $iconcat_(Inn, 128, i_3, i_4))).
 
 extwideop__ Inn (MUL_WIDE sx) i_1 i_2
-1. Return $isplit_(Inn, 128, $imul_(128, $iextend_($sizenn(Inn), 128, sx, i_1), $iextend_($sizenn(Inn), 128, sx, i_2))).
+1. Return $isplit_(Inn, 128, $imul_(128, $iextend_(128, $sizenn(Inn), sx, i_1), $iextend_(128, $sizenn(Inn), sx, i_2))).
 
 zeroop lanetype' X M_1 lanetype X M_2 vcvtop__
 1. If lanetype' is Jnn, then:

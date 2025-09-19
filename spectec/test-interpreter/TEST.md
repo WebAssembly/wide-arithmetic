@@ -1553,39 +1553,9 @@ spectec 0.5 generator
 - 0/0 (100.00%)
 
 ===== ../test-interpreter/spec-test-3/wide-arithmetic.wast =====
-../test-interpreter/spec-test-3/wide-arithmetic.wast:69.1-70.44
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:69.1-70.44 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:71.1-72.46
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:71.1-72.46 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:246.1-247.64
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:246.1-247.64 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:248.1-249.44
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:248.1-249.44 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:252.1-253.80
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:252.1-253.80 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:254.1-255.82
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:254.1-255.82 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:258.1-259.62
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:258.1-259.62 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:260.1-261.46
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:260.1-261.46 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:262.1-263.62
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:262.1-263.62 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:264.1-265.44
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:264.1-265.44 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:270.1-271.44
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:270.1-271.44 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:272.1-273.44
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:272.1-273.44 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:276.1-277.46
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:276.1-277.46 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:278.1-279.81
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:278.1-279.81 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-../test-interpreter/spec-test-3/wide-arithmetic.wast:393.1-394.46
-- Test failed at ../test-interpreter/spec-test-3/wide-arithmetic.wast:393.1-394.46 ($inv_signed_: on expr `(i < $int$(0))` assertion fail (interpreting  Assert ((i < $int$(0))) at ))
-- 96/111 (86.49%)
+- 111/111 (100.00%)
 
-Total [60436/60451] (99.98%)
+Total [60451/60451] (100.00%)
 
 == Complete.
 ```

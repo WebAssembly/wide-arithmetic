@@ -4915,7 +4915,7 @@ def $cvtop__(numtype_1 : numtype, numtype_2 : numtype, cvtop__ : cvtop__(numtype
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $iconcat_(numtype : numtype, N : N, num_ : num_(numtype), num_ : num_(numtype)) : iN(N)
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $iconcat_{Inn : Inn, N : N, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), N, i_1, i_2) = $ior_(N, `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), N, U_sx, i_1)!`%`_iN.0), $ishl_(N, `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), N, U_sx, i_2)!`%`_iN.0), `%`_u32($sizenn((Inn : Inn <: numtype)))))
+  def $iconcat_{Inn : Inn, N : N, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), N, i_1, i_2) = $ior_(N, $iextend_(N, $sizenn((Inn : Inn <: numtype)), U_sx, `%`_iN(i_1!`%`_num_.0)), $ishl_(N, $iextend_(N, $sizenn((Inn : Inn <: numtype)), U_sx, `%`_iN(i_2!`%`_num_.0)), `%`_u32($sizenn((Inn : Inn <: numtype)))))
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $isplit_(numtype : numtype, N : N, iN : iN(N)) : (num_(numtype), num_(numtype))
@@ -4937,7 +4937,7 @@ def $wideop__(numtype : numtype, wideop_ : wideop_(numtype), num_ : num_(numtype
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $extwideop__(numtype : numtype, extwideop_ : extwideop_(numtype), num_ : num_(numtype), num_ : num_(numtype)) : (num_(numtype), num_(numtype))
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $extwideop__{Inn : Inn, sx : sx, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), MUL_WIDE_extwideop_(sx), i_1, i_2) = $isplit_((Inn : Inn <: numtype), 128, $imul_(128, `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), 128, sx, i_1)!`%`_iN.0), `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), 128, sx, i_2)!`%`_iN.0)))
+  def $extwideop__{Inn : Inn, sx : sx, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), MUL_WIDE_extwideop_(sx), i_1, i_2) = $isplit_((Inn : Inn <: numtype), 128, $imul_(128, $iextend_(128, $sizenn((Inn : Inn <: numtype)), sx, `%`_iN(i_1!`%`_num_.0)), $iextend_(128, $sizenn((Inn : Inn <: numtype)), sx, `%`_iN(i_2!`%`_num_.0))))
 
 ;; ../../../../specification/wasm-3.0/3.2-numerics.vector.spectec
 def $lanes_(shape : shape, vec_ : vec_(V128_Vnn)) : lane_($lanetype(shape))*
@@ -16331,7 +16331,7 @@ def $cvtop__(numtype_1 : numtype, numtype_2 : numtype, cvtop__ : cvtop__(numtype
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $iconcat_(numtype : numtype, N : N, num_ : num_(numtype), num_ : num_(numtype)) : iN(N)
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $iconcat_{Inn : Inn, N : N, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), N, i_1, i_2) = $ior_(N, `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), N, U_sx, i_1)!`%`_iN.0), $ishl_(N, `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), N, U_sx, i_2)!`%`_iN.0), `%`_u32($sizenn((Inn : Inn <: numtype)))))
+  def $iconcat_{Inn : Inn, N : N, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), N, i_1, i_2) = $ior_(N, $iextend_(N, $sizenn((Inn : Inn <: numtype)), U_sx, `%`_iN(i_1!`%`_num_.0)), $ishl_(N, $iextend_(N, $sizenn((Inn : Inn <: numtype)), U_sx, `%`_iN(i_2!`%`_num_.0)), `%`_u32($sizenn((Inn : Inn <: numtype)))))
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $isplit_(numtype : numtype, N : N, iN : iN(N)) : (num_(numtype), num_(numtype))
@@ -16353,7 +16353,7 @@ def $wideop__(numtype : numtype, wideop_ : wideop_(numtype), num_ : num_(numtype
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $extwideop__(numtype : numtype, extwideop_ : extwideop_(numtype), num_ : num_(numtype), num_ : num_(numtype)) : (num_(numtype), num_(numtype))
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $extwideop__{Inn : Inn, sx : sx, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), MUL_WIDE_extwideop_(sx), i_1, i_2) = $isplit_((Inn : Inn <: numtype), 128, $imul_(128, `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), 128, sx, i_1)!`%`_iN.0), `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), 128, sx, i_2)!`%`_iN.0)))
+  def $extwideop__{Inn : Inn, sx : sx, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), MUL_WIDE_extwideop_(sx), i_1, i_2) = $isplit_((Inn : Inn <: numtype), 128, $imul_(128, $iextend_(128, $sizenn((Inn : Inn <: numtype)), sx, `%`_iN(i_1!`%`_num_.0)), $iextend_(128, $sizenn((Inn : Inn <: numtype)), sx, `%`_iN(i_2!`%`_num_.0))))
 
 ;; ../../../../specification/wasm-3.0/3.2-numerics.vector.spectec
 def $lanes_(shape : shape, vec_ : vec_(V128_Vnn)) : lane_($lanetype(shape))*
@@ -27873,7 +27873,7 @@ def $cvtop__(numtype_1 : numtype, numtype_2 : numtype, cvtop__ : cvtop__(numtype
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $iconcat_(numtype : numtype, N : N, num_ : num_(numtype), num_ : num_(numtype)) : iN(N)
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $iconcat_{Inn : Inn, N : N, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), N, i_1, i_2) = $ior_(N, `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), N, U_sx, i_1)!`%`_iN.0), $ishl_(N, `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), N, U_sx, i_2)!`%`_iN.0), `%`_u32($sizenn((Inn : Inn <: numtype)))))
+  def $iconcat_{Inn : Inn, N : N, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), N, i_1, i_2) = $ior_(N, $iextend_(N, $sizenn((Inn : Inn <: numtype)), U_sx, `%`_iN(i_1!`%`_num_.0)), $ishl_(N, $iextend_(N, $sizenn((Inn : Inn <: numtype)), U_sx, `%`_iN(i_2!`%`_num_.0)), `%`_u32($sizenn((Inn : Inn <: numtype)))))
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $isplit_(numtype : numtype, N : N, iN : iN(N)) : (num_(numtype), num_(numtype))
@@ -27895,7 +27895,7 @@ def $wideop__(numtype : numtype, wideop_ : wideop_(numtype), num_ : num_(numtype
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $extwideop__(numtype : numtype, extwideop_ : extwideop_(numtype), num_ : num_(numtype), num_ : num_(numtype)) : (num_(numtype), num_(numtype))
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $extwideop__{Inn : Inn, sx : sx, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), MUL_WIDE_extwideop_(sx), i_1, i_2) = $isplit_((Inn : Inn <: numtype), 128, $imul_(128, `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), 128, sx, i_1)!`%`_iN.0), `%`_iN($iextend_($sizenn((Inn : Inn <: numtype)), 128, sx, i_2)!`%`_iN.0)))
+  def $extwideop__{Inn : Inn, sx : sx, i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), MUL_WIDE_extwideop_(sx), i_1, i_2) = $isplit_((Inn : Inn <: numtype), 128, $imul_(128, $iextend_(128, $sizenn((Inn : Inn <: numtype)), sx, `%`_iN(i_1!`%`_num_.0)), $iextend_(128, $sizenn((Inn : Inn <: numtype)), sx, `%`_iN(i_2!`%`_num_.0))))
 
 ;; ../../../../specification/wasm-3.0/3.2-numerics.vector.spectec
 def $lanes_(shape : shape, vec_ : vec_(V128_Vnn)) : lane_($lanetype(shape))*

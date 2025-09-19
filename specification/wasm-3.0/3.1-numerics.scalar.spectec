@@ -447,8 +447,8 @@ def $iconcat_(numtype, N, num_(numtype), num_(numtype)) : iN(N)
 def $iconcat_(Inn, N, i_1, i_2) =
   $ior_(
     N,
-    $iextend_($sizenn(Inn), N, U, i_1),
-    $ishl_(N, $iextend_($sizenn(Inn), N, U, i_2), $sizenn(Inn)),
+    $iextend_(N, $sizenn(Inn), U, i_1),
+    $ishl_(N, $iextend_(N, $sizenn(Inn), U, i_2), $sizenn(Inn)),
   )
 
 def $isplit_(numtype, N, iN(N)) : (num_(numtype), num_(numtype))
@@ -482,7 +482,7 @@ def $extwideop__(Inn, MUL_WIDE sx, i_1, i_2) =
     128,
     $imul_(
       128,
-      $iextend_($sizenn(Inn), 128, sx, i_1),
-      $iextend_($sizenn(Inn), 128, sx, i_2),
+      $iextend_(128, $sizenn(Inn), sx, i_1),
+      $iextend_(128, $sizenn(Inn), sx, i_2),
     )
   )
