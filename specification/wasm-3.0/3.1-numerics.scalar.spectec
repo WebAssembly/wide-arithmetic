@@ -457,16 +457,16 @@ def $isplit_(Inn, N, i_1) = (
   $wrap__(N, $sizenn(Inn), $ishr_(N, U, i_1, $sizenn(Inn))),
 )
 
-def $binop128_(numtype, N, wideop_(numtype), iN(N), iN(N)) : iN(N)
-def $binop128_(Inn, N, ADD128, i_1, i_2) = $iadd_(N, i_1, i_2)
-def $binop128_(Inn, N, SUB128, i_1, i_2) = $isub_(N, i_1, i_2)
+def $wideop_(numtype, N, wideop_(numtype), iN(N), iN(N)) : iN(N)
+def $wideop_(Inn, N, ADD128, i_1, i_2) = $iadd_(N, i_1, i_2)
+def $wideop_(Inn, N, SUB128, i_1, i_2) = $isub_(N, i_1, i_2)
 
 def $wideop__(numtype, wideop_(numtype), num_(numtype), num_(numtype), num_(numtype), num_(numtype)) : (num_(numtype), num_(numtype))
 def $wideop__(Inn, wideop, i_1, i_2, i_3, i_4) =
   $isplit_(
     Inn,
     128,
-    $binop128_(
+    $wideop_(
       Inn,
       128,
       wideop,

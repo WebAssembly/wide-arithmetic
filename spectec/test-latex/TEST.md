@@ -8359,8 +8359,8 @@ $$
 
 $$
 \begin{array}[t]{@{}lcl@{}l@{}}
-{{\mathrm{binop{\kern-0.1em\scriptstyle 128}}}}_{{\mathsf{i}}{N}}(N, \mathsf{add{\scriptstyle 128}}, i_1, i_2) & = & {{\mathrm{iadd}}}_{N}(i_1, i_2) \\
-{{\mathrm{binop{\kern-0.1em\scriptstyle 128}}}}_{{\mathsf{i}}{N}}(N, \mathsf{sub{\scriptstyle 128}}, i_1, i_2) & = & {{\mathrm{isub}}}_{N}(i_1, i_2) \\
+{{\mathrm{wideop}}}_{{\mathsf{i}}{N}}(N, \mathsf{add{\scriptstyle 128}}, i_1, i_2) & = & {{\mathrm{iadd}}}_{N}(i_1, i_2) \\
+{{\mathrm{wideop}}}_{{\mathsf{i}}{N}}(N, \mathsf{sub{\scriptstyle 128}}, i_1, i_2) & = & {{\mathrm{isub}}}_{N}(i_1, i_2) \\
 \end{array}
 $$
 
@@ -8369,7 +8369,7 @@ $$
 {{\mathrm{wideop}}}_{{\mathsf{i}}{N}, {\mathit{wideop}}}(i_1, i_2, i_3, i_4) & = & & \\
  \multicolumn{4}{@{}l@{}}{\quad
 \begin{array}[t]{@{}l@{}}
-{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{binop{\kern-0.1em\scriptstyle 128}}}}_{{\mathsf{i}}{N}}(128, {\mathit{wideop}}, {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_1, i_2), {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_3, i_4))) \\
+{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{wideop}}}_{{\mathsf{i}}{N}}(128, {\mathit{wideop}}, {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_1, i_2), {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_3, i_4))) \\
 \end{array}
 } \\
 \end{array}

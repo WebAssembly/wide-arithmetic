@@ -351,8 +351,8 @@ let al_to_cvtop: value list -> cvtop = function
   | l -> error_values "cvtop" l
 
 let al_to_i64_wideop = function
-  | CaseV ("ADD", []) -> I64Op.Add128
-  | CaseV ("SUB", []) -> I64Op.Sub128
+  | CaseV ("ADD128", []) -> I64Op.Add128
+  | CaseV ("SUB128", []) -> I64Op.Sub128
   | v -> error_value "i64_wideop" v
 
 let al_to_wideop = al_to_i64op al_to_i64_wideop
@@ -1398,8 +1398,8 @@ let al_of_cvtop = function
     [ nullary "F64"; nullary to_; caseV (op', sx) ]
 
 let al_of_i64_wideop = function
-  | I64Op.Add128 -> CaseV ("ADD", [])
-  | I64Op.Sub128 -> CaseV ("SUB", [])
+  | I64Op.Add128 -> CaseV ("ADD128", [])
+  | I64Op.Sub128 -> CaseV ("SUB128", [])
 
 let al_of_wideop (op: wideop) =
   match op with

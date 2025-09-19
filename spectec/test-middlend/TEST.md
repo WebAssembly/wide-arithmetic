@@ -4923,16 +4923,16 @@ def $isplit_(numtype : numtype, N : N, iN : iN(N)) : (num_(numtype), num_(numtyp
   def $isplit_{Inn : Inn, N : N, i_1 : iN(N)}((Inn : Inn <: numtype), N, i_1) = ($wrap__(N, $sizenn((Inn : Inn <: numtype)), i_1), $wrap__(N, $sizenn((Inn : Inn <: numtype)), $ishr_(N, U_sx, i_1, `%`_u32($sizenn((Inn : Inn <: numtype))))))
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-def $binop128_(numtype : numtype, N : N, wideop_ : wideop_(numtype), iN : iN(N), iN : iN(N)) : iN(N)
+def $wideop_(numtype : numtype, N : N, wideop_ : wideop_(numtype), iN : iN(N), iN : iN(N)) : iN(N)
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $binop128_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, ADD128_wideop_, i_1, i_2) = $iadd_(N, i_1, i_2)
+  def $wideop_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, ADD128_wideop_, i_1, i_2) = $iadd_(N, i_1, i_2)
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $binop128_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, SUB128_wideop_, i_1, i_2) = $isub_(N, i_1, i_2)
+  def $wideop_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, SUB128_wideop_, i_1, i_2) = $isub_(N, i_1, i_2)
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $wideop__(numtype : numtype, wideop_ : wideop_(numtype), num_ : num_(numtype), num_ : num_(numtype), num_ : num_(numtype), num_ : num_(numtype)) : (num_(numtype), num_(numtype))
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $wideop__{Inn : Inn, wideop : wideop_((Inn : Inn <: numtype)), i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype)), i_3 : num_((Inn : Inn <: numtype)), i_4 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), wideop, i_1, i_2, i_3, i_4) = $isplit_((Inn : Inn <: numtype), 128, $binop128_((Inn : Inn <: numtype), 128, wideop, $iconcat_((Inn : Inn <: numtype), 128, i_1, i_2), $iconcat_((Inn : Inn <: numtype), 128, i_3, i_4)))
+  def $wideop__{Inn : Inn, wideop : wideop_((Inn : Inn <: numtype)), i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype)), i_3 : num_((Inn : Inn <: numtype)), i_4 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), wideop, i_1, i_2, i_3, i_4) = $isplit_((Inn : Inn <: numtype), 128, $wideop_((Inn : Inn <: numtype), 128, wideop, $iconcat_((Inn : Inn <: numtype), 128, i_1, i_2), $iconcat_((Inn : Inn <: numtype), 128, i_3, i_4)))
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $extwideop__(numtype : numtype, extwideop_ : extwideop_(numtype), num_ : num_(numtype), num_ : num_(numtype)) : (num_(numtype), num_(numtype))
@@ -16339,16 +16339,16 @@ def $isplit_(numtype : numtype, N : N, iN : iN(N)) : (num_(numtype), num_(numtyp
   def $isplit_{Inn : Inn, N : N, i_1 : iN(N)}((Inn : Inn <: numtype), N, i_1) = ($wrap__(N, $sizenn((Inn : Inn <: numtype)), i_1), $wrap__(N, $sizenn((Inn : Inn <: numtype)), $ishr_(N, U_sx, i_1, `%`_u32($sizenn((Inn : Inn <: numtype))))))
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-def $binop128_(numtype : numtype, N : N, wideop_ : wideop_(numtype), iN : iN(N), iN : iN(N)) : iN(N)
+def $wideop_(numtype : numtype, N : N, wideop_ : wideop_(numtype), iN : iN(N), iN : iN(N)) : iN(N)
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $binop128_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, ADD128_wideop_, i_1, i_2) = $iadd_(N, i_1, i_2)
+  def $wideop_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, ADD128_wideop_, i_1, i_2) = $iadd_(N, i_1, i_2)
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $binop128_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, SUB128_wideop_, i_1, i_2) = $isub_(N, i_1, i_2)
+  def $wideop_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, SUB128_wideop_, i_1, i_2) = $isub_(N, i_1, i_2)
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $wideop__(numtype : numtype, wideop_ : wideop_(numtype), num_ : num_(numtype), num_ : num_(numtype), num_ : num_(numtype), num_ : num_(numtype)) : (num_(numtype), num_(numtype))
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $wideop__{Inn : Inn, wideop : wideop_((Inn : Inn <: numtype)), i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype)), i_3 : num_((Inn : Inn <: numtype)), i_4 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), wideop, i_1, i_2, i_3, i_4) = $isplit_((Inn : Inn <: numtype), 128, $binop128_((Inn : Inn <: numtype), 128, wideop, $iconcat_((Inn : Inn <: numtype), 128, i_1, i_2), $iconcat_((Inn : Inn <: numtype), 128, i_3, i_4)))
+  def $wideop__{Inn : Inn, wideop : wideop_((Inn : Inn <: numtype)), i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype)), i_3 : num_((Inn : Inn <: numtype)), i_4 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), wideop, i_1, i_2, i_3, i_4) = $isplit_((Inn : Inn <: numtype), 128, $wideop_((Inn : Inn <: numtype), 128, wideop, $iconcat_((Inn : Inn <: numtype), 128, i_1, i_2), $iconcat_((Inn : Inn <: numtype), 128, i_3, i_4)))
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $extwideop__(numtype : numtype, extwideop_ : extwideop_(numtype), num_ : num_(numtype), num_ : num_(numtype)) : (num_(numtype), num_(numtype))
@@ -27881,16 +27881,16 @@ def $isplit_(numtype : numtype, N : N, iN : iN(N)) : (num_(numtype), num_(numtyp
   def $isplit_{Inn : Inn, N : N, i_1 : iN(N)}((Inn : Inn <: numtype), N, i_1) = ($wrap__(N, $sizenn((Inn : Inn <: numtype)), i_1), $wrap__(N, $sizenn((Inn : Inn <: numtype)), $ishr_(N, U_sx, i_1, `%`_u32($sizenn((Inn : Inn <: numtype))))))
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-def $binop128_(numtype : numtype, N : N, wideop_ : wideop_(numtype), iN : iN(N), iN : iN(N)) : iN(N)
+def $wideop_(numtype : numtype, N : N, wideop_ : wideop_(numtype), iN : iN(N), iN : iN(N)) : iN(N)
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $binop128_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, ADD128_wideop_, i_1, i_2) = $iadd_(N, i_1, i_2)
+  def $wideop_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, ADD128_wideop_, i_1, i_2) = $iadd_(N, i_1, i_2)
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $binop128_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, SUB128_wideop_, i_1, i_2) = $isub_(N, i_1, i_2)
+  def $wideop_{Inn : Inn, N : N, i_1 : iN(N), i_2 : iN(N)}((Inn : Inn <: numtype), N, SUB128_wideop_, i_1, i_2) = $isub_(N, i_1, i_2)
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $wideop__(numtype : numtype, wideop_ : wideop_(numtype), num_ : num_(numtype), num_ : num_(numtype), num_ : num_(numtype), num_ : num_(numtype)) : (num_(numtype), num_(numtype))
   ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
-  def $wideop__{Inn : Inn, wideop : wideop_((Inn : Inn <: numtype)), i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype)), i_3 : num_((Inn : Inn <: numtype)), i_4 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), wideop, i_1, i_2, i_3, i_4) = $isplit_((Inn : Inn <: numtype), 128, $binop128_((Inn : Inn <: numtype), 128, wideop, $iconcat_((Inn : Inn <: numtype), 128, i_1, i_2), $iconcat_((Inn : Inn <: numtype), 128, i_3, i_4)))
+  def $wideop__{Inn : Inn, wideop : wideop_((Inn : Inn <: numtype)), i_1 : num_((Inn : Inn <: numtype)), i_2 : num_((Inn : Inn <: numtype)), i_3 : num_((Inn : Inn <: numtype)), i_4 : num_((Inn : Inn <: numtype))}((Inn : Inn <: numtype), wideop, i_1, i_2, i_3, i_4) = $isplit_((Inn : Inn <: numtype), 128, $wideop_((Inn : Inn <: numtype), 128, wideop, $iconcat_((Inn : Inn <: numtype), 128, i_1, i_2), $iconcat_((Inn : Inn <: numtype), 128, i_3, i_4)))
 
 ;; ../../../../specification/wasm-3.0/3.1-numerics.scalar.spectec
 def $extwideop__(numtype : numtype, extwideop_ : extwideop_(numtype), num_ : num_(numtype), num_ : num_(numtype)) : (num_(numtype), num_(numtype))
