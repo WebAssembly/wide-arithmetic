@@ -1496,7 +1496,6 @@ warning: definition `alloctypes` was never spliced
 warning: definition `arrayinst` was never spliced
 warning: definition `as_deftype` was never spliced
 warning: definition `before` was never spliced
-warning: definition `binop128_` was never spliced
 warning: definition `binop_` was never spliced
 warning: definition `blocktype_` was never spliced
 warning: definition `bool` was never spliced
@@ -1883,6 +1882,7 @@ warning: definition `vunpack` was never spliced
 warning: definition `vvbinop_` was never spliced
 warning: definition `vvternop_` was never spliced
 warning: definition `vvunop_` was never spliced
+warning: definition `wideop_` was never spliced
 warning: definition `wideop__` was never spliced
 warning: definition `with_array` was never spliced
 warning: definition `with_data` was never spliced
@@ -2377,7 +2377,6 @@ warning: definition prose `alloctypes` was never spliced
 warning: definition prose `arrayinst` was never spliced
 warning: definition prose `as_deftype` was never spliced
 warning: definition prose `before` was never spliced
-warning: definition prose `binop128_` was never spliced
 warning: definition prose `binop_` was never spliced
 warning: definition prose `blocktype_` was never spliced
 warning: definition prose `bool` was never spliced
@@ -2691,6 +2690,7 @@ warning: definition prose `vunpack` was never spliced
 warning: definition prose `vvbinop_` was never spliced
 warning: definition prose `vvternop_` was never spliced
 warning: definition prose `vvunop_` was never spliced
+warning: definition prose `wideop_` was never spliced
 warning: definition prose `wideop__` was never spliced
 warning: definition prose `with_array` was never spliced
 warning: definition prose `with_data` was never spliced

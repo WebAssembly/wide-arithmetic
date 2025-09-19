@@ -24388,8 +24388,8 @@ The instruction sequence :math:`(\mathsf{block}~{\mathit{blocktype}}~{{\mathit{i
 1. Return :math:`({{\mathrm{wrap}}}_{N, N}(i_1), {{\mathrm{wrap}}}_{N, N}({{\mathrm{ishr}}}{\mathsf{u}}{{}_{N}(i_1, N)}))`.
 
 
-:math:`{{\mathrm{binop{\kern-0.1em\scriptstyle 128}}}}_{{\mathsf{i}}{N}}(N, {\mathit{wideop}}, i_1, i_2)`
-.........................................................................................................
+:math:`{{\mathrm{wideop}}}_{{\mathsf{i}}{N}}(N, {\mathit{wideop}}, i_1, i_2)`
+.............................................................................
 
 
 1. If :math:`{\mathit{wideop}} = \mathsf{add{\scriptstyle 128}}`, then:
@@ -24405,7 +24405,7 @@ The instruction sequence :math:`(\mathsf{block}~{\mathit{blocktype}}~{{\mathit{i
 ....................................................................................
 
 
-1. Return :math:`{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{binop{\kern-0.1em\scriptstyle 128}}}}_{{\mathsf{i}}{N}}(128, {\mathit{wideop}}, {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_1, i_2), {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_3, i_4)))`.
+1. Return :math:`{{\mathrm{isplit}}}_{{\mathsf{i}}{N}}(128, {{\mathrm{wideop}}}_{{\mathsf{i}}{N}}(128, {\mathit{wideop}}, {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_1, i_2), {{\mathrm{iconcat}}}_{{\mathsf{i}}{N}}(128, i_3, i_4)))`.
 
 
 :math:`{{\mathrm{extwideop}}}_{{\mathsf{i}}{N}, {\mathsf{mul\_wide}}{\mathsf{\_}}{{\mathit{sx}}}}(i_1, i_2)`
@@ -32003,14 +32003,14 @@ iconcat_ Inn N i_1 i_2
 isplit_ Inn N i_1
 1. Return ($wrap__(N, $sizenn(Inn), i_1), $wrap__(N, $sizenn(Inn), $ishr_(N, U, i_1, $sizenn(Inn)))).
 
-binop128_ Inn N wideop_ i_1 i_2
+wideop_ Inn N wideop_ i_1 i_2
 1. If (wideop_ = ADD128), then:
   a. Return $iadd_(N, i_1, i_2).
 2. Assert: Due to validation, (wideop_ = SUB128).
 3. Return $isub_(N, i_1, i_2).
 
 wideop__ Inn wideop i_1 i_2 i_3 i_4
-1. Return $isplit_(Inn, 128, $binop128_(Inn, 128, wideop, $iconcat_(Inn, 128, i_1, i_2), $iconcat_(Inn, 128, i_3, i_4))).
+1. Return $isplit_(Inn, 128, $wideop_(Inn, 128, wideop, $iconcat_(Inn, 128, i_1, i_2), $iconcat_(Inn, 128, i_3, i_4))).
 
 extwideop__ Inn (MUL_WIDE sx) i_1 i_2
 1. Return $isplit_(Inn, 128, $imul_(128, $iextend_($sizenn(Inn), 128, sx, i_1), $iextend_($sizenn(Inn), 128, sx, i_2))).
