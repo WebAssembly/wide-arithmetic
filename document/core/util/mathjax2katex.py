@@ -73,7 +73,7 @@ def ReplaceMath(cache, data):
   data = data.replace('\\mbox', '\\text')
   data = data.replace('\\begin{split}', '\\begin{aligned}')
   data = data.replace('\\end{split}', '\\end{aligned}')
-  data = re.sub('\\\\multicolumn\\{[0-9]*\\}\\{[a-z]*\\}', '', data)   # Katex can't handle it
+  data = re.sub('\\\\multicolumn\\{[2-9]\\}\\{@\\{\\}l@\\{\\}\\}', '', data)   # Katex can't handle it
   data = data.replace('&amp;', '&')    # Messed up by Bikeshed
   data = data.replace('&lt;', '<')     # Messed up by Bikeshed
   data = data.replace('&gt;', '>')     # Messed up by Bikeshed
@@ -107,6 +107,7 @@ def ReplaceMath(cache, data):
       if start is None:
         break
       data = data[:start] + v.replace('#1', data[start+len(k):end]) + data[end:]
+
   p = subprocess.Popen(
       ['node', os.path.join(SCRIPT_DIR, 'katex/cli.js'), '--display-mode', '--trust'],
       stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
