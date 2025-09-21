@@ -16,6 +16,6 @@ currently [at phase 3 in the proposals process][phase].
   * [new abstract syntax](https://webassembly.github.io/wide-arithmetic/core/syntax/instructions.html#numeric-instructions)
   * [new binary opcodes (scroll down)](https://webassembly.github.io/wide-arithmetic/core/binary/instructions.html#numeric-instructions)
   * [new text opcodes (scroll down)](https://webassembly.github.io/wide-arithmetic/core/text/instructions.html#numeric-instructions)
-  * [new validation](https://webassembly.github.io/wide-arithmetic/core/valid/instructions.html#xref-syntax-types-syntax-valtype-mathsf-i64-mathsf-xref-syntax-instructions-syntax-binop-mathit-binop-mathsf-128)
-  * [new execution](https://webassembly.github.io/wide-arithmetic/core/exec/instructions.html#xref-syntax-types-syntax-valtype-mathsf-i64-mathsf-xref-syntax-instructions-syntax-binop-mathit-binop-mathsf-128)
+  * [new validation](https://webassembly.github.io/wide-arithmetic/core/valid/instructions.html#numeric-instructions)
+  * [new execution](https://webassembly.github.io/wide-arithmetic/core/exec/instructions.html#numeric-instructions)
   * [new helper functions](https://webassembly.github.io/wide-arithmetic/core/exec/numerics.html#xref-exec-numerics-op-iconcat-mathrm-iconcat-m-n-i-1-i-2)
