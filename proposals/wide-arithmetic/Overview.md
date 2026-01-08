@@ -304,6 +304,7 @@ Validation:
 
 * [x] [`wasmparser` in `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/pull/1853)
 * [x] [Reference interpreter](https://github.com/WebAssembly/wide-arithmetic/pull/22)
+* [x] [`wat_service` in wasm-language-tools](https://github.com/g-plane/wasm-language-tools/commit/9950e494d369da95595bfc10be8fc12be4302aff)
 
 Binary encoders:
 
