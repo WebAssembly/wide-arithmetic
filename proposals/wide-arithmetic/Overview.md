@@ -289,6 +289,7 @@ Engines:
 * [x] [Reference interpreter](https://github.com/WebAssembly/wide-arithmetic/pull/22)
 * [x] [Wasmi](https://github.com/wasmi-labs/wasmi/pull/1383)
 * [x] [Chasm](https://github.com/CharlieTap/chasm/pull/110)
+* [x] [JavaScriptCore](https://commits.webkit.org/311366@main)
 
 Toolchains:
 
